@@ -10,6 +10,7 @@ function Layout() {
   return (
     <>
       <NavBar></NavBar>
+      <Outlet />
     </>
   );
 }

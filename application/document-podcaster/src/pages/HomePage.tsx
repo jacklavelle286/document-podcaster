@@ -1,13 +1,14 @@
 import Accordion from "../components/Accordion";
 import Card from "../components/Card";
+import Footer from "../components/Footer";
 
 export default function HomePage() {
   return (
     <>
       <div className="flex justify-center items-center h-screen p-4">
-        <h1 className="text-center p-4">Are you an Audio learner?</h1>
+        <h1 className="text-center p-4">Listen to your documents.</h1>
         <h2 className="text-center p-4">
-          Turn your documents into podcasts and listen on the go!
+          Turn your documents into podcasts and listen on the go.
         </h2>
 
         <div className="flex flex-wrap gap-4">
@@ -17,21 +18,21 @@ export default function HomePage() {
                 <Card
                   cardTitle="Perfect For Audio Learners"
                   cardText="Transform your reading materials into engaging audio content. Ideal for students, professionals, and anyone who prefers listening to reading. Upload documents, choose a voice, and listen anywhere."
-                  cardImagePath="../src/images/headphones.jpg"
+                  backgroundColour="#fde5e3b3"
                 ></Card>
               </div>
               <div className="col">
                 <Card
                   cardTitle="Boost Productivity"
                   cardText="Maximize your time by consuming content while commuting, exercising, or completing other tasks. Convert lengthy documents into audio files and make the most of your busy schedule. Take charge of your learning!"
-                  cardImagePath="../src/images/waves.jpg"
+                  backgroundColour="#fdf3e3b3"
                 ></Card>
               </div>
               <div className="col">
                 <Card
                   cardTitle="Accessibility For Everyone"
                   cardText="Make your content accessible to those with visual impairments or reading difficulties. Our natural-sounding voice technology delivers clear, engaging audio from any text document."
-                  cardImagePath="../src/images/headphones-2.jpg"
+                  backgroundColour="#f8fde3b3" 
                 ></Card>
               </div>
             </div>
@@ -71,9 +72,7 @@ export default function HomePage() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>Support for multiple document formats (PDF, DOCX, TXT)</li>
                 <li>Natural-sounding voice synthesis with adjustable speeds</li>
-                <li>Bookmarking capability to resume where you left off</li>
                 <li>Offline listening for downloaded audio files</li>
-                <li>Chapter detection and navigation</li>
                 <li>Custom voice profiles for personalized listening</li>
               </ul>
             </div>
@@ -97,6 +96,7 @@ export default function HomePage() {
             </div>
           }
         ></Accordion>
+        <Footer></Footer>
       </div>
     </>
   );

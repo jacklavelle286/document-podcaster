@@ -1,23 +1,43 @@
 interface ButtonProps {
   buttonText: string;
-  buttonColour: "primary" | "secondary" | "tertiary" | "danger" | "warning" | "success"
+  buttonTextColour?: "white" | "dark";
+  buttonColour:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "danger"
+    | "warning"
+    | "success"
+    | "close";
   buttonMargin?: string;
   buttonSolid?: boolean;
-  buttonType?: "submit" | "button" | "reset"
+  buttonType?: "submit" | "button" | "reset";
+  dataBSToggle?: string;
+  dataBSTarget?: string;
+  dataBSDismiss?: string;
 }
 
 export default function Button({
   buttonText,
+  buttonTextColour,
   buttonColour,
   buttonMargin = "mx-3",
   buttonSolid = true,
-  buttonType = "button"
+  buttonType = "button",
+  dataBSToggle,
+  dataBSTarget,
+  dataBSDismiss
 }: ButtonProps) {
-  const buttonColourPrefix = buttonSolid ? "btn btn-" : "btn btn-outline-";
+  const buttonColourPrefix = buttonSolid
+    ? `text-${buttonTextColour} btn btn-`
+    : `text-${buttonTextColour} btn btn-outline-`;
   return (
     <button
       type={buttonType}
       className={`${buttonColourPrefix}${buttonColour} ${buttonMargin}`}
+      data-bs-toggle={dataBSToggle}
+      data-bs-target={dataBSTarget}
+      data-bs-dismiss={dataBSDismiss}
     >
       {buttonText}
     </button>

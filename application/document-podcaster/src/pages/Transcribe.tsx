@@ -1,5 +1,5 @@
+import TranscribeModal from "../components/TranscribeModal";
+
 export default function Transcribe() {
-    return(
-        <h2>Transcribe here.</h2>
-    )
+  return <TranscribeModal></TranscribeModal>;
 }

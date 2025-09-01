@@ -41,19 +41,6 @@ export default function TranscribeModal() {
             <div className="modal-body">
               <TranscribeForm></TranscribeForm>
             </div>
-            <div className="modal-footer">
-              <Button
-                buttonType="button"
-                buttonColour="secondary"
-                buttonText="Close"
-                dataBSDismiss="modal"
-              ></Button>
-              <Button
-                buttonType="button"
-                buttonColour="primary"
-                buttonText="Transcribe"
-              ></Button>
-            </div>
           </div>
         </div>
       </div>

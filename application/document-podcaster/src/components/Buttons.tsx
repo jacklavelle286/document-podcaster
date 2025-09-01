@@ -1,20 +1,21 @@
 interface ButtonProps {
-  buttonText: string;
-  buttonTextColour?: "white" | "dark";
-  buttonColour:
-    | "primary"
-    | "secondary"
-    | "tertiary"
-    | "danger"
-    | "warning"
-    | "success"
-    | "close";
-  buttonMargin?: string;
-  buttonSolid?: boolean;
-  buttonType?: "submit" | "button" | "reset";
-  dataBSToggle?: string;
-  dataBSTarget?: string;
-  dataBSDismiss?: string;
+    buttonText: string;
+    buttonTextColour?: "white" | "dark";
+    buttonColour:
+        | "primary"
+        | "secondary"
+        | "tertiary"
+        | "danger"
+        | "warning"
+        | "success"
+        | "close";
+    buttonMargin?: string;
+    buttonSolid?: boolean;
+    buttonType?: "submit" | "button" | "reset";
+    dataBSToggle?: string;
+    dataBSTarget?: string;
+    dataBSDismiss?: string;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({
@@ -26,7 +27,8 @@ export default function Button({
   buttonType = "button",
   dataBSToggle,
   dataBSTarget,
-  dataBSDismiss
+  dataBSDismiss,
+  onClick
 }: ButtonProps) {
   const buttonColourPrefix = buttonSolid
     ? `text-${buttonTextColour} btn btn-`

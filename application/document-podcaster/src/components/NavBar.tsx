@@ -34,7 +34,7 @@ export default function NavBar() {
               <NavLink to="/transcribe" style={linkStyle}>
                 <Button
                   buttonText="Transcribe"
-                  buttonColour="primary"
+                  buttonColour="success"
                   buttonSolid={false}
                 ></Button>
               </NavLink>
@@ -43,7 +43,7 @@ export default function NavBar() {
               <NavLink to="/transcriptions" style={linkStyle}>
                 <Button
                   buttonText="Transcriptions"
-                  buttonColour="danger"
+                  buttonColour="success"
                   buttonSolid={false}
                 ></Button>
               </NavLink>

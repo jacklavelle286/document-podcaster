@@ -18,21 +18,21 @@ export default function HomePage() {
                 <Card
                   cardTitle="Perfect For Audio Learners"
                   cardText="Transform your reading materials into engaging audio content. Ideal for students, professionals, and anyone who prefers listening to reading. Upload documents, choose a voice, and listen anywhere."
-                  backgroundColour="#fde5e3b3"
+                  cardHeight="250px"
                 ></Card>
               </div>
               <div className="col">
                 <Card
                   cardTitle="Boost Productivity"
                   cardText="Maximize your time by consuming content while commuting, exercising, or completing other tasks. Convert lengthy documents into audio files and make the most of your busy schedule. Take charge of your learning!"
-                  backgroundColour="#fdf3e3b3"
+                  cardHeight="250px"
                 ></Card>
               </div>
               <div className="col">
                 <Card
                   cardTitle="Accessibility For Everyone"
                   cardText="Make your content accessible to those with visual impairments or reading difficulties. Our natural-sounding voice technology delivers clear, engaging audio from any text document."
-                  backgroundColour="#f8fde3b3" 
+                  cardHeight="250px"
                 ></Card>
               </div>
             </div>

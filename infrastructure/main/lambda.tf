@@ -1,7 +1,8 @@
 module "get_job_function" {
-  source = "../modules/lambda_container"
+  source           = "../modules/lambda_container"
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.get_job_repo_name}:latest"
-  function_name = "get_job"
+  function_name    = "get_job"
+  lambda_role_name = "${local.resource_name_prefix}-get-job-role"
   policy_statements = [
     {
       sid       = "Logs"
@@ -21,10 +22,12 @@ module "get_job_function" {
 
 
 module "transcriber_function" {
-  source = "../modules/lambda_container"
+  source           = "../modules/lambda_container"
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.transcriber_repo_name}:latest"
-  function_name = "transcriber"
-    policy_statements = [
+  function_name    = "transcriber"
+  lambda_role_name = "${local.resource_name_prefix}-transcriber-role"
+
+  policy_statements = [
     {
       sid       = "Logs"
       effect    = "Allow"
@@ -41,10 +44,12 @@ module "transcriber_function" {
 }
 
 module "uploader_function" {
-  source = "../modules/lambda_container"
+  source           = "../modules/lambda_container"
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.uploader_repo_name}:latest"
-  function_name = "uploader"
-    policy_statements = [
+  function_name    = "uploader"
+  lambda_role_name = "${local.resource_name_prefix}-uploader-role"
+
+  policy_statements = [
     {
       sid       = "Logs"
       effect    = "Allow"

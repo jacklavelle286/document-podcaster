@@ -60,10 +60,10 @@ variable "tracing_mode" {
   default = "Active"
 }
 
-# variable "lambda_role_name" {
-#   description = "Lambda role name"
-#   type = string
-# }
+variable "lambda_role_name" {
+  description = "Lambda role name"
+  type = string
+}
 
 
 variable "log_retention_in_days" {

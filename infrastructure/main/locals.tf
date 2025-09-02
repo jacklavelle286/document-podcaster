@@ -9,13 +9,11 @@ locals {
 
 }
 
-#s3 locals
+# Unified resource naming convention
 
 locals {
-  upload_name = "${var.environment}-${var.project}-${var.region}-upload"
-}
-
-
-locals {
-  outputs_name = "${var.environment}-${var.project}-${var.region}-outputs"
+    resource_name_prefix = "${var.environment}-${var.project}-${var.region}"
+    s3_upload_name   = "${local.resource_name_prefix}-upload"
+    s3_outputs_name  = "${local.resource_name_prefix}-outputs"
+    dynamo_job_table_name = "${local.resource_name_prefix}-job"
 }

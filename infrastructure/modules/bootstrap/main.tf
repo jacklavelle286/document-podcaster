@@ -63,7 +63,7 @@ resource "aws_dynamodb_table" "lock" {
 
 
 resource "aws_ecr_repository" "lambda_repo" {
-  name         = "${var.project}-${var.environment}-${var.ecr_repos[count.index].repo_name}"
+  name         = "${var.project}-${var.environment}-${var.region}-${var.ecr_repos[count.index].repo_name}"
   force_delete = true
   count        = length(var.ecr_repos)
   tags         = local.default_tags

@@ -1,0 +1,253 @@
+name: Lambda (build & push)
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: "Environment (e.g., poc, prod)"
+        required: true
+        type: choice
+        options: [poc, prod]
+        default: poc
+      target:
+        description: "Targets: 'all', a single name, or comma-separated names"
+        required: true
+        type: string
+        default: all
+      tag:
+        description: "Primary image tag to push (e.g., latest or a release tag)"
+        required: true
+        default: latest
+      also_tag_sha:
+        description: "Also tag images with the short Git SHA"
+        required: true
+        type: boolean
+        default: true
+      update_lambda_after_push:
+        description: "Update Lambda code in-place to the image tag after pushing"
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  LAMBDA_ROOT: application/lambda_functions
+
+jobs:
+  prepare:
+    name: Prepare matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Discover targets
+        id: discover
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="${LAMBDA_ROOT}"
+          INPUT_RAW="${{ inputs.target }}"
+
+          # Immediate subdirs only (exclude files like the shared Dockerfile)
+          mapfile -t ALL < <(find "$ROOT" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
+
+          # Treat a dir as a lambda if it has main.py or requirements.txt
+          mapfile -t DOCKERABLE < <(
+            for d in "${ALL[@]}"; do
+              if [[ -f "$ROOT/$d/main.py" || -f "$ROOT/$d/requirements.txt" ]]; then
+                echo "$d"
+              fi
+            done
+          )
+
+          if [[ ${#DOCKERABLE[@]} -eq 0 ]]; then
+            echo "::error::No lambda function directories found under $ROOT"
+            exit 1
+          fi
+
+          IFS=',' read -r -a REQ <<< "$INPUT_RAW"
+
+          if [[ ${#REQ[@]} -eq 1 && "${REQ[0]}" == "all" ]]; then
+            TARGETS=("${DOCKERABLE[@]}")
+          else
+            TARGETS=()
+            for t in "${REQ[@]}"; do
+              t="$(echo "$t" | xargs)"  # trim whitespace
+              if printf '%s\n' "${DOCKERABLE[@]}" | grep -qx -- "$t"; then
+                TARGETS+=("$t")
+              else
+                echo "::error title=Invalid target::'$t' is not a valid function directory."
+                echo "### Valid function directories" >> "$GITHUB_STEP_SUMMARY"
+                printf -- "- %s\n" "${DOCKERABLE[@]}" >> "$GITHUB_STEP_SUMMARY"
+                exit 1
+              fi
+            done
+          fi
+
+          # De-dup while preserving order
+          mapfile -t TARGETS < <(printf '%s\n' "${TARGETS[@]}" | awk '!seen[$0]++')
+
+          if [[ ${#TARGETS[@]} -eq 0 ]]; then
+            echo "::error::No targets resolved."
+            exit 1
+          fi
+
+          # Single-line JSON for $GITHUB_OUTPUT
+          JSON=$(printf '%s\0' "${TARGETS[@]}" | jq -Rs 'split("\u0000") | map(select(length>0)) | {target: .} | @json' | jq -r '.')
+          echo "matrix=$JSON" >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### Build plan"
+            printf -- "- %s\n" "${TARGETS[@]}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  build:
+    name: Build & push (${{ matrix.target }})
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.env }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install prerequisites (jq, unzip)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq unzip
+
+      - name: Install AWS CLI v2 (official bundle)
+        run: |
+          set -euo pipefail
+          ARCH="$(uname -m)"
+          if [ "$ARCH" = "x86_64" ]; then
+            PKG="awscli-exe-linux-x86_64.zip"
+          elif [ "$ARCH" = "aarch64" ]; then
+            PKG="awscli-exe-linux-aarch64.zip"
+          else
+            echo "Unsupported arch: $ARCH" >&2
+            exit 1
+          fi
+          curl -fsSL "https://awscli.amazonaws.com/${PKG}" -o awscliv2.zip
+          unzip -q awscliv2.zip
+          sudo ./aws/install --update
+          aws --version
+
+      - name: Load shared and env-specific vars
+        id: vars
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENV="${{ inputs.env }}"
+          COMMON="envs/common.auto.tfvars.json"
+          ENVFILE="envs/${ENV}.tfvars.json"
+
+          [[ -f "$COMMON"  ]] || { echo "Missing $COMMON"; exit 1; }
+          [[ -f "$ENVFILE" ]] || { echo "Missing $ENVFILE"; exit 1; }
+
+          REGION=$(jq -r '.region' "$COMMON")
+          PROJECT=$(jq -r '.project' "$COMMON")
+          ACCOUNT_ID=$(jq -r '.aws_account_id' "$ENVFILE")
+          ENVIRONMENT=$(jq -r '.environment' "$ENVFILE")
+
+          [[ -n "$ACCOUNT_ID" && "$ACCOUNT_ID" != "null" ]] || { echo "aws_account_id missing in $ENVFILE"; exit 1; }
+          [[ -n "$REGION" && "$REGION" != "null" ]] || { echo "region missing in $COMMON"; exit 1; }
+          [[ -n "$PROJECT" && "$PROJECT" != "null" ]] || { echo "project missing in $COMMON"; exit 1; }
+          [[ -n "$ENVIRONMENT" && "$ENVIRONMENT" != "null" ]] || { echo "environment missing in $ENVFILE"; exit 1; }
+
+          ECR_REGISTRY="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
+          NAME_PREFIX="${PROJECT}-${ENVIRONMENT}"
+
+          echo "region=$REGION"             >> $GITHUB_OUTPUT
+          echo "project=$PROJECT"           >> $GITHUB_OUTPUT
+          echo "account_id=$ACCOUNT_ID"     >> $GITHUB_OUTPUT
+          echo "environment=$ENVIRONMENT"   >> $GITHUB_OUTPUT
+          echo "ecr_registry=$ECR_REGISTRY" >> $GITHUB_OUTPUT
+          echo "name_prefix=$NAME_PREFIX"   >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ steps.vars.outputs.account_id }}:role/github-federation
+          aws-region: ${{ steps.vars.outputs.region }}
+
+      - name: Verify AWS account matches env tfvars
+        run: |
+          set -euo pipefail
+          ACTUAL=$(aws sts get-caller-identity --query Account --output text)
+          EXPECTED="${{ steps.vars.outputs.account_id }}"
+          echo "Actual:   $ACTUAL"
+          echo "Expected: $EXPECTED"
+          [[ "$ACTUAL" == "$EXPECTED" ]]
+
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region "${{ steps.vars.outputs.region }}" \
+            | docker login --username AWS --password-stdin "${{ steps.vars.outputs.ecr_registry }}"
+
+      - name: Verify ECR repository exists (no create)
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET="${{ matrix.target }}"
+          REPO="${{ steps.vars.outputs.name_prefix }}-${TARGET}"
+          if ! aws ecr describe-repositories --repository-names "$REPO" >/dev/null 2>&1; then
+            echo "::error title=Missing ECR repository::$REPO does not exist in account ${{ steps.vars.outputs.account_id }} (${{
+              steps.vars.outputs.region }})."
+            echo "Expected repo name: $REPO" >> "$GITHUB_STEP_SUMMARY"
+            echo "Tip: provision ECR repos via Terraform (project+environment+dir name)." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Using repo: $REPO"
+
+      - name: Build & push ${{ matrix.target }}
+        id: buildpush
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="${LAMBDA_ROOT}"
+          TARGET="${{ matrix.target }}"
+          IMAGE="${{ steps.vars.outputs.ecr_registry }}/${{ steps.vars.outputs.name_prefix }}-${TARGET}:${{ inputs.tag }}"
+
+          echo "Building $IMAGE from ${ROOT}/${TARGET}"
+          docker build \
+            -f "${ROOT}/Dockerfile" \
+            -t "$IMAGE" \
+            "${ROOT}/${TARGET}"
+          docker push "$IMAGE"
+
+          if ${{ inputs.also_tag_sha }}; then
+            SHORT_SHA="${GITHUB_SHA::7}"
+            docker tag "$IMAGE" "${IMAGE%:*}:$SHORT_SHA"
+            docker push "${IMAGE%:*}:$SHORT_SHA"
+            echo "sha_tag=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Update Lambda code (in-place) to the tag you pushed
+        if: ${{ inputs.update_lambda_after_push }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          FN="${{ steps.vars.outputs.name_prefix }}-${{ matrix.target }}"
+          IMAGE="${{ steps.vars.outputs.ecr_registry }}/${{ steps.vars.outputs.name_prefix }}-${{ matrix.target }}:${{ inputs.tag }}"
+          if aws lambda get-function --function-name "$FN" >/dev/null 2>&1; then
+            echo "Updating $FN to $IMAGE"
+            aws lambda update-function-code \
+              --function-name "$FN" \
+              --image-uri "$IMAGE" \
+              --publish >/dev/null
+          else
+            echo "WARN: Lambda function $FN not found; skipping update"
+          fi

@@ -8,3 +8,8 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+
+variable "get_job_function_name" {}
+variable "transcriber_function_name" {}
+variable "uploader_function_name" {}

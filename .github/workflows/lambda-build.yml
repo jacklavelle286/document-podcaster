@@ -7,7 +7,7 @@ on:
         description: "Environment (e.g., poc, prod)"
         required: true
         type: choice
-        options: [poc, prod]
+        options: [poc]
         default: poc
       target:
         description: "Targets: 'all', a single name, or comma-separated names"

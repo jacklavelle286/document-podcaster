@@ -14,3 +14,8 @@ locals {
 locals {
   upload_name = "${var.environment}-${var.project}-${var.region}-upload"
 }
+
+
+locals {
+  outputs_name = "${var.environment}-${var.project}-${var.region}-outputs"
+}

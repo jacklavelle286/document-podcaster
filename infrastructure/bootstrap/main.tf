@@ -13,6 +13,9 @@ module "boostrap" {
     {
       repo_name = "transcriber"
     },
+    {
+      repo_name = "get-job"
+    }
     
   ]
 }

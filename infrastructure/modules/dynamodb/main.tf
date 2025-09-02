@@ -8,38 +8,4 @@ resource "aws_dynamodb_table" "this" {
         type = "S"
     }
 
-    attribute {
-        name = "status"
-        type = "S"
-    }
-
-    attribute {
-        name = "error"
-        type = "S"
-    }
-
-    attribute {
-        name = "inputKey"
-        type = "S"
-    }
-
-    attribute {
-        name = "outputKey"
-        type = "S"
-    }
-
-    attribute {
-        name = "createdAt"
-        type = "S"
-    }
-
-    attribute {
-        name = "updatedAt"
-        type = "S"
-    }
-
-    attribute {
-        name = "userId"
-        type = "S"
-    }
 }

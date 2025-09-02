@@ -5,7 +5,7 @@ export default function Settings() {
   const languages = ["English", "Spanish", "French", "Greek"];
   return (
     <>
-      <h2 className="p-4 text-center">Settings</h2>
+      <h2 className="p-4 text-center">Settings ⚙️</h2>
       <form
         className="px-5 py-4 text-center"
         style={{

@@ -4,7 +4,7 @@ import TranscribeForm from "./TranscribeForm";
 export default function TranscribeModal() {
   return (
     <>
-      <h1 className="text-center p-5">Upload Your Document</h1>
+      <h1 className="text-center p-5">Upload Your Document &#128196;</h1>
       <div className="d-flex justify-content-center">
         <Button
           buttonText="Upload Document"

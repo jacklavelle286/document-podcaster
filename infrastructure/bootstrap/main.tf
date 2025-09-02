@@ -12,6 +12,7 @@ module "boostrap" {
     },
     {
       repo_name = "transcriber"
-    }
+    },
+    
   ]
 }

@@ -130,7 +130,7 @@ export default function Transcriptions() {
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ minHeight: "60vh" }}
         >
-          <h1 className="mb-4 text-center">No transcriptions yet.</h1>
+          <h1 className="mb-4 text-center">No transcriptions yet &#128078;</h1>
           <NavLink to="/transcribe">
             <Button buttonColour="danger" buttonText="Start Transcribing Now" />
           </NavLink>

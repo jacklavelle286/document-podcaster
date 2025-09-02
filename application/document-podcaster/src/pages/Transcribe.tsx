@@ -1,8 +1,11 @@
+import { faTruckMedical } from "@fortawesome/free-solid-svg-icons";
+import Button from "../components/Buttons";
 import Card from "../components/Card";
 import TranscribeModal from "../components/TranscribeModal";
 
 export default function Transcribe() {
-  const successfullSubmit = true;
+  const successfullSubmit = false;
+  const error = "Error";
   return (
     <>
       <TranscribeModal></TranscribeModal>
@@ -20,8 +23,21 @@ export default function Transcribe() {
           <p className="text-white justify text-center">
             {successfullSubmit
               ? "Download your transcription below:"
-              : "Error transcribing document: "}
+              : `Error transcribing document, see error below: ${error}`}
           </p>
+          {successfullSubmit ? (
+            <Button
+              buttonColour="success"
+              buttonTextColour="white"
+              buttonText="Download Transcript"
+            ></Button>
+          ) : (
+            <Button
+              buttonColour="danger"
+              buttonTextColour="white"
+              buttonText="Try Again"
+            ></Button>
+          )}
         </div>
       </Card>
     </>

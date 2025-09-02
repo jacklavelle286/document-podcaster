@@ -6,12 +6,12 @@ export default function HomePage() {
   return (
     <>
       <div className="flex justify-center items-center h-screen p-4">
-        <h1 className="text-center p-4">Listen to your documents.</h1>
+        <h1 className="text-center p-4">Listen to your documents &#127911;</h1>
         <h2 className="text-center p-4">
-          Turn your documents into podcasts and listen on the go.
+          Turn your documents into podcasts and listen on the go 🚶🏻
         </h2>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 m-3">
           <div className="container text-center">
             <div className="row">
               <div className="col">
@@ -19,6 +19,7 @@ export default function HomePage() {
                   cardTitle="Perfect For Audio Learners"
                   cardText="Transform your reading materials into engaging audio content. Ideal for students, professionals, and anyone who prefers listening to reading. Upload documents, choose a voice, and listen anywhere."
                   cardHeight="250px"
+                  
                 ></Card>
               </div>
               <div className="col">

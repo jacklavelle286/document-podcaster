@@ -200,12 +200,11 @@ jobs:
         run: |
           set -euo pipefail
           TARGET="${{ matrix.target }}"
-          REPO="${{ steps.vars.outputs.name_prefix }}-${TARGET}"
+          REPO="${{ steps.vars.outputs.project }}-${{ steps.vars.outputs.environment }}-${{ steps.vars.outputs.region }}-${TARGET}"
           if ! aws ecr describe-repositories --repository-names "$REPO" >/dev/null 2>&1; then
-            echo "::error title=Missing ECR repository::$REPO does not exist in account ${{ steps.vars.outputs.account_id }} (${{
-              steps.vars.outputs.region }})."
+            echo "::error title=Missing ECR repository::$REPO does not exist in account ${{ steps.vars.outputs.account_id }} (${{ steps.vars.outputs.region }})."
             echo "Expected repo name: $REPO" >> "$GITHUB_STEP_SUMMARY"
-            echo "Tip: provision ECR repos via Terraform (project+environment+dir name)." >> "$GITHUB_STEP_SUMMARY"
+            echo "Tip: provision ECR repos via Terraform (project-env-region-dir name)." >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
           echo "Using repo: $REPO"

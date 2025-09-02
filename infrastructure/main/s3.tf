@@ -1,3 +1,4 @@
-resource "aws_s3_bucket" "upload_bucket" {
-  bucket = local.upload_bucket
+module "upload_bucket" {
+  source = "../modules/s3"
+  bucket_name = local.upload_name
 }

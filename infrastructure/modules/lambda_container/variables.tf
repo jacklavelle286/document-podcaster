@@ -66,7 +66,7 @@ variable "lambda_role_name" {
 }
 
 
-variable "log_retention_in_days" {.........
+variable "log_retention_in_days" {
   type = number
   default = 7
 }

@@ -41,7 +41,3 @@ export default function Settings() {
     </>
   );
 }
-/* 
-Yes, the map of languages is correct. 
-You are iterating over the `languages` array and rendering an <option> for each language with a unique `key` and `value`.
-*/

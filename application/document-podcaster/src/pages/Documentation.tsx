@@ -1,4 +1,5 @@
 import Card from "../components/Card";
+import HelloTester from "../components/TestComponents";
 
 export default function Documentation() {
   return (
@@ -27,6 +28,7 @@ export default function Documentation() {
           </ol>
         </div>
       </Card>
+      <HelloTester></HelloTester>
     </>
   );
 }

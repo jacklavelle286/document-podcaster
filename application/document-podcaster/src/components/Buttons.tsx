@@ -16,6 +16,7 @@ interface ButtonProps {
     dataBSTarget?: string;
     dataBSDismiss?: string;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  
 }
 
 export default function Button({

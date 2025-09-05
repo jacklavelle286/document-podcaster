@@ -1,40 +1,29 @@
-import { useState } from "react";
-import Button from "./Buttons";
+import { useEffect, useState } from "react";
 
-type Status = "idle" | "loading" | "success" | "error";
+export default function HelloOnMount() {
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
+  const [data, setData] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-export default function HelloTester() {
-    const API_BASE = import.meta.env.VITE_API_BASE_URL
-    const [status, setStatus] = useState<Status>("idle")
-    const [data, setData] = useState<string | null>(null)
-    const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const ctrl = new AbortController();
 
-    async function handleClick() {
-        setStatus("loading");
-        setError(null);
-        setData(null);
-
+    (async () => {
         try {
-            const res = await fetch (`${API_BASE}/test`, {method: "GET"});
-            if (!res.ok) throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+            const res = await fetch(`${API_BASE}/test`, {signal: ctrl.signal});
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const bodyText = await res.text();
             setData(bodyText);
-            setStatus("success");
-        } catch (err) {
-            const msg = err instanceof Error ? err.message : String(err);
-            setError(msg);
-            setStatus("error")
+        } catch ( err: any) {
+            if (err?.name === "AbortError") return;
+            setError(err instanceof Error ? err.message : String(err));
         }
+    })();
 
-    }
+    return () => ctrl.abort();
+  }, [API_BASE]);
 
-    return (
-        <div>
-            <button onClick={handleClick} disabled={status === "loading"}>
-                {status === "loading" ? "Loading" : "Call API"}
-            </button>
-            {status === "success" && <p>Response: {data}</p>}
-            {status === "error" && <p className="text-danger">Error: {error} </p>}
-        </div>
-    )
+  if (error) return <p className="text-danger"> Error: {error} </p>
+  if (!data) return <p>Loading..</p>
+  return <p>Response: {data}</p>
 }

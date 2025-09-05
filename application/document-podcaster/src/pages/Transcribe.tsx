@@ -2,7 +2,6 @@ import Button from "../components/Buttons";
 import Card from "../components/Card";
 import TranscribeModal from "../components/TranscribeModal";
 
-import { useState, useEffect } from "react";
 
 export default function Transcribe() {
   const successfullSubmit = false;

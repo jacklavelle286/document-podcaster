@@ -34,7 +34,7 @@ export default function HelloTester() {
                 {status === "loading" ? "Loading" : "Call API"}
             </button>
             {status === "success" && <p>Response: {data}</p>}
-            {status === "error" && <p className="text-danger">Error: {error}</p>}
+            {status === "error" && <p className="text-danger">Error: {error} </p>}
         </div>
     )
 }

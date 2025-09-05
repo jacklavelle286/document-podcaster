@@ -239,7 +239,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          FN="${{ steps.vars.outputs.name_prefix }}-${{ matrix.target }}"
+          FN="${{ steps.vars.outputs.name_prefix }}-${{ steps.vars.outputs.region }}-${{ matrix.target }}"
           IMAGE="${{ steps.vars.outputs.ecr_registry }}/${{ steps.vars.outputs.name_prefix }}-${{ matrix.target }}:${{ inputs.tag }}"
           if aws lambda get-function --function-name "$FN" >/dev/null 2>&1; then
             echo "Updating $FN to $IMAGE"

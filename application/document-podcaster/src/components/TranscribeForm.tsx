@@ -1,6 +1,17 @@
 import { useState } from "react";
 import Button from "./Buttons";
 
+
+// first, send metadata to lambda:
+
+// 
+// {
+//   "fileName": "my-audio.mp3",
+//   "fileType": "audio/mpeg",
+//   "voiceType": "Voice A"
+// }
+
+
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function TranscribeForm() {

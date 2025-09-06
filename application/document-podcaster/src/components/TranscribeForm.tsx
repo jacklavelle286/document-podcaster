@@ -27,6 +27,7 @@ export default function TranscribeForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
+    setFile(null);
     setError(null);
     setResult(null);
 
@@ -85,7 +86,15 @@ export default function TranscribeForm() {
         <label htmlFor="formFile" className="form-label">
           Default file input example
         </label>
-        <input className="form-control" type="file" id="formFile" />
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={(e) => {
+            const target = e.target as HTMLInputElement;
+            setFile(target.files && target.files[0] ? target.files[0] : null);
+          }}
+        />
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Button

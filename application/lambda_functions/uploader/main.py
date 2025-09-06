@@ -9,12 +9,16 @@ def lambda_handler(event, context):
     1. Generate Presigned URL and return to client.
     2. Use Presigned URL to upload file to s3.
     '''
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
     body = json.loads(event["body"])
     file_name = body.get("fileName")
-    logging.info(f"File name: {file_name}")
+
+    logger.info(f"File name: {file_name}")
 
     bucketName = os.environ["UPLOAD_BUCKET"]
-    logging.info(f"BucketName: {bucketName}")
+    logger.info(f"BucketName: {bucketName}")
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
 
@@ -33,7 +37,7 @@ def createPresignedUrl(bucket, object_name, expiration):
     s3_client = boto3.client('s3')
     try:
         response = s3_client.generate_presigned_url(
-            'get_object',
+            'put_object',
             Params={'Bucket': bucket, 'Key': object_name},
             ExpiresIn=expiration,
         )

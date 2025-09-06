@@ -6,7 +6,7 @@ module "upload_bucket" {
   allowed_methods = ["POST", "PUT"]
   allowed_origins = [var.allowed_origins]
   enable_bucket_notification = true
-  bucket_lambda_function_arn = module.transcriber_function_arn
+  bucket_lambda_function_arn = module.transcriber_function.function_arn
 
 }
 

@@ -1,17 +1,6 @@
 import { useState } from "react";
 import Button from "./Buttons";
 
-
-// first, send metadata to lambda:
-
-// 
-// {
-//   "fileName": "my-audio.mp3",
-//   "fileType": "audio/mpeg",
-//   "voiceType": "Voice A"
-// }
-
-
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function TranscribeForm() {
@@ -22,12 +11,11 @@ export default function TranscribeForm() {
 
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<string | null>(null);
+  const [result, setResult] = useState<{ url: string } | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
-    setFile(null);
     setError(null);
     setResult(null);
 
@@ -45,14 +33,30 @@ export default function TranscribeForm() {
 
       if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
 
-      const bodyText = await res.text();
-      setResult(bodyText);
+      const bodyJson = await res.json();
+      setResult(bodyJson);
+
+      const { url, objectKey } = bodyJson;
+
+      const putRes = await fetch(url, {
+        method: "PUT",
+        headers: { "content-type": file?.type || "application/octet-stream" },
+        body: file,
+      });
+
+      if (!putRes.ok) throw new Error(`Upload Failed: ${putRes.status}`)
+ 
       setStatus("success");
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
-      setStatus("error");
+      setStatus("error");    setError(null);
+
+
+
     }
+
+
   }
 
   return (
@@ -103,7 +107,14 @@ export default function TranscribeForm() {
           buttonText="Transcribe"
         ></Button>
       </div>
-      {status === "success" && <p className="mt-3">Response: {result}</p>}
+      {status === "loading" && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+      {status === "success" && result && <p>Uploaded {file?.name}</p>}
       {status === "error" && <p className="mt-3 text-danger">Error: {error}</p>}
     </form>
   );

@@ -3,7 +3,7 @@ module "upload_bucket" {
   bucket_name = local.s3_upload_name
   enable_cors = true
   allowed_headers = ["*"]
-  allowed_methods = ["PUT"]
+  allowed_methods = ["POST"]
   allowed_origins = [var.allowed_origins]
 }
 

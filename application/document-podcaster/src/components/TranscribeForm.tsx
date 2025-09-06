@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Button from "./Buttons";
+import useVoices from "./useVoices";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 
 
+
 export default function TranscribeForm() {
-  const voices = ["Voice A", "Voice B", "Voice C"];
+  const { voices, loading: voicesLoading, error: voicesError } = useVoices();
   const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
   const [voiceType, setVoiceType] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);

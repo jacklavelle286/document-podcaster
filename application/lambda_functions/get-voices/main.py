@@ -13,7 +13,6 @@ def getVoices():
     response = polly.describe_voices(
         Engine="standard",
         LanguageCode="en-GB",
-        IncludeAdditionalLanguageCodes=False,
-        NextToken='string'
+        IncludeAdditionalLanguageCodes=False
     )
     return response

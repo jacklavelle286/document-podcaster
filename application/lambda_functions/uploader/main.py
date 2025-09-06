@@ -11,7 +11,7 @@ def lambda_handler(event, context):
     print(f"Voice type: {voice_type}")
     print(f"file Name: {file_name}")
 
-    url = createPresignedUrl(bucket="document-podcastor-poc-eu-west-2-upload", object_name="file", expiration=3600)
+    url = createPresignedUrl(bucket="document-podcastor-poc-eu-west-2-upload", object_name=file_name, expiration=3600)
 
 
     return {

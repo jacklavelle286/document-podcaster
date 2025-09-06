@@ -1,11 +1,16 @@
 variable "bucket_name" {}
 variable "enable_cors" {}
 variable "allowed_headers" {
-    default = null
+  default = null
+  type    = list(string)
 }
 variable "allowed_origins" {
-    default = null
+  default = null
+  type    = list(string)
+
 }
 variable "allowed_methods" {
-    default = null
+  default = null
+  type    = list(string)
+
 }

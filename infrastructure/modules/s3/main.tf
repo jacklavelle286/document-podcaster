@@ -8,7 +8,7 @@ resource "aws_s3_bucket_cors_configuration" "this" {
   bucket = aws_s3_bucket.this.bucket
   cors_rule {
     allowed_headers = var.allowed_headers
-    allowed_methods = var.allowed_headers
+    allowed_methods = var.allowed_methods
     allowed_origins = var.allowed_origins
   }
 }

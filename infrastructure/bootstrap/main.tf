@@ -15,6 +15,9 @@ module "boostrap" {
     },
     {
       repo_name = "get-job"
+    },
+    {
+      repo_name = "get-voices"
     }
     
   ]

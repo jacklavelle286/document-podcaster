@@ -3,6 +3,8 @@ import Button from "./Buttons";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+
+
 export default function TranscribeForm() {
   const voices = ["Voice A", "Voice B", "Voice C"];
   const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
@@ -108,9 +110,9 @@ export default function TranscribeForm() {
       ></Button>
       </div>
       {status === "loading" && (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+      <div className="d-flex justify-content-center primary p-3">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
       </div>
       )}

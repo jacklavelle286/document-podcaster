@@ -49,7 +49,7 @@ module "uploader_function" {
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.uploader_repo_name}:latest"
   function_name    = "${local.resource_name_prefix}-uploader"
   lambda_role_name = "${local.resource_name_prefix}-uploader-role"
-  log_retention_in_days = 2
+  log_retention_in_days = 3
   environment_variables = {
     UPLOAD_BUCKET = module.upload_bucket.bucket_name
   }

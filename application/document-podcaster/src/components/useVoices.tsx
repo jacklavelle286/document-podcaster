@@ -19,12 +19,17 @@ export default function useVoices() {
           method: "GET",
           signal: ctrl.signal,
         });
+        console.log("[voices] status", res.status);
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
 
         const data: VoicesResponse = await res.json();
+        console.log("[voices] payload", data); // 👈
+
         setVoices(data.voices);
       } catch (e: any) {
         if (e?.name !== "AbortError") {
+          console.error("[voices] error", e); // 👈
+
           setError(e instanceof Error ? e.message : String(e));
         }
       } finally {
@@ -35,5 +40,5 @@ export default function useVoices() {
     return () => ctrl.abort();
   }, [API_BASE]);
 
-  return { voices };
+  return { voices, loading, error };
 }

@@ -6,7 +6,7 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export default function TranscribeForm() {
   const { voices } = useVoices();
-  console.log(voices)
+  console.log(voices);
   const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
   const [voiceType, setVoiceType] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
@@ -53,7 +53,6 @@ export default function TranscribeForm() {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
       setStatus("error");
-      setError(null);
     }
   }
 
@@ -72,11 +71,12 @@ export default function TranscribeForm() {
           aria-label="Default select example"
         >
           <option value="">Choose a Voice</option>
-          {voices.map((voice, idx) => (
-            <option key={idx} value={voice}>
-              {voice}
-            </option>
-          ))}
+          {Array.isArray(voices) &&
+            voices.map((voice, idx) => (
+              <option key={idx} value={voice}>
+                {voice}
+              </option>
+            ))}
         </select>
 
         <div id="emailHelp" className="form-text">

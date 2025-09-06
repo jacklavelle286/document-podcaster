@@ -30,7 +30,7 @@ resource "aws_apigatewayv2_route" "post_uploads" {
 resource "aws_apigatewayv2_route" "get_jobs" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "GET /jobs/{jobId}"
-  target    = "integrations/${aws_apigatewayv2_integration.jobs_integration.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.get_voices_integrations.id}"
 }
 
 

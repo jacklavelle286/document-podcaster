@@ -26,9 +26,7 @@ module "transcriber_function" {
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.transcriber_repo_name}:latest"
   function_name    = "${local.resource_name_prefix}-transcriber"
   lambda_role_name = "${local.resource_name_prefix}-transcriber-role"
-  environment_variables = {
-    UPLOAD_BUCKET = module.upload_bucket.bucket_name
-  }
+
 
   policy_statements = [
     {
@@ -51,6 +49,9 @@ module "uploader_function" {
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.uploader_repo_name}:latest"
   function_name    = "${local.resource_name_prefix}-uploader"
   lambda_role_name = "${local.resource_name_prefix}-uploader-role"
+  environment_variables = {
+    UPLOAD_BUCKET = module.upload_bucket.bucket_name
+  }
 
   policy_statements = [
     {

@@ -8,6 +8,6 @@ from botocore.exceptions import ClientError
 def lambda_handler(event, context):
     voices = ["Normal", "Interesting", "Funky"]
     return {
-        'voices': json.dumps(voices)
+        'body': json.dumps({"voices": voices})
     }
 

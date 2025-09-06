@@ -118,11 +118,11 @@ export default function TranscribeForm() {
       )}
       {status === "success" && result && (
       <div className="d-flex justify-content-center">
-        <p>Uploaded {file?.name}</p>
+        <p className="m-4">Uploaded {file?.name}</p>
       </div>
       )}
       {status === "error" && (
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center p-2">
         <p className="mt-3 text-danger">Error: {error}</p>
       </div>
       )}

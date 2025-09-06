@@ -10,3 +10,8 @@ variable "tags" {
 }
 
 
+#s3
+
+variable "allowed_origins" {
+  
+}

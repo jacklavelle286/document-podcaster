@@ -24,6 +24,7 @@ resource "aws_s3_bucket_notification" "this" {
 }
 
 resource "aws_lambda_permission" "allow_s3_invoke_from_upload_bucket" {
+  count = var.enable_bucket_notification ? 1 : 0
   statement_id  = "AllowS3InvokeFromUploadBucket"
   action        = "lambda:InvokeFunction"
   function_name = var.bucket_lambda_function_name

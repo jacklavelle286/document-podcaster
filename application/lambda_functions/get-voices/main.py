@@ -12,4 +12,4 @@ def getVoices():
         LanguageCode="en-GB",
         IncludeAdditionalLanguageCodes=False
     )
-    return response["Voices"["Name"]]  
+    return response["Voices"]["Name"]  

@@ -4,7 +4,7 @@ import boto3
 def lambda_handler(event, context):
     voices = getVoices()
     return {
-        "body": json.dumps({ "voices": voices })
+        "body": json.dumps({ voices })
     }
 
 
@@ -15,4 +15,4 @@ def getVoices():
         LanguageCode="en-GB",
         IncludeAdditionalLanguageCodes=False
     )
-    return response
+    return response["Voices"]

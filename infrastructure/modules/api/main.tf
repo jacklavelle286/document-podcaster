@@ -72,7 +72,7 @@ resource "aws_apigatewayv2_stage" "default" {
   auto_deploy = true
 }
 
-# Lambda permissions for BOTH integrations
+# Lambda permissions for  integrations
 resource "aws_lambda_permission" "uploads_api" {
   statement_id  = "AllowAPIGatewayInvokeUploads"
   action        = "lambda:InvokeFunction"
@@ -85,6 +85,15 @@ resource "aws_lambda_permission" "jobs_api" {
   statement_id  = "AllowAPIGatewayInvokeJobs"
   action        = "lambda:InvokeFunction"
   function_name = var.get_job_function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
+}
+
+
+resource "aws_lambda_permission" "get_voices_api" {
+  statement_id  = "AllowAPIGatewayInvokeJobs"
+  action        = "lambda:InvokeFunction"
+  function_name = var.get_voices_function_name
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }

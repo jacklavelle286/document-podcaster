@@ -5,7 +5,7 @@ import useVoices from "./useVoices";
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function TranscribeForm() {
-  const { voices, loading: voicesLoading, error: voicesError } = useVoices();
+  const { voices } = useVoices();
   const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
   const [voiceType, setVoiceType] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
@@ -77,7 +77,7 @@ export default function TranscribeForm() {
             </option>
           ))}
         </select>
-          
+
         <div id="emailHelp" className="form-text">
           Select which voice you'd like your transcription to be read in.
         </div>

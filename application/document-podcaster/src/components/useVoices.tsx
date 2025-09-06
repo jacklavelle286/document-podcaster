@@ -35,5 +35,5 @@ export default function useVoices() {
     return () => ctrl.abort();
   }, [API_BASE]);
 
-  return { voices, loading, error };
+  return { voices };
 }

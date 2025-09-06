@@ -22,3 +22,11 @@ resource "aws_s3_bucket_notification" "this" {
     events              = ["s3:ObjectCreated:*"]
   }
 }
+
+resource "aws_lambda_permission" "allow_s3_invoke_from_upload_bucket" {
+  statement_id  = "AllowS3InvokeFromUploadBucket"
+  action        = "lambda:InvokeFunction"
+  function_name = var.bucket_lambda_function_name
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.this.arn
+}

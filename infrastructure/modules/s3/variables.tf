@@ -22,3 +22,8 @@ variable "enable_bucket_notification" {
 variable "bucket_lambda_function_arn" {
   default = null
 }
+
+
+variable "bucket_lambda_function_name" {
+  default = null
+}

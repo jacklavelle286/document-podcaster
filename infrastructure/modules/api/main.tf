@@ -33,6 +33,13 @@ resource "aws_apigatewayv2_route" "get_jobs" {
   target    = "integrations/${aws_apigatewayv2_integration.jobs_integration.id}"
 }
 
+
+resource "aws_apigatewayv2_route" "get_voices" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  route_key = "GET /get_voices"
+  target    = "integrations/${aws_apigatewayv2_integration.jobs_integration.id}"
+}
+
 resource "aws_apigatewayv2_integration" "uploads_integration" {
   api_id                  = aws_apigatewayv2_api.http_api.id
   integration_type        = "AWS_PROXY"
@@ -47,6 +54,15 @@ resource "aws_apigatewayv2_integration" "jobs_integration" {
   integration_uri         = var.get_job_function_arn
   integration_method      = "POST"
   payload_format_version  = "2.0"
+}
+
+
+resource "aws_apigatewayv2_integration" "get_voices_integrations" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri = var.get_voices_function_arn
+  integration_method = "POST"
+  payload_format_version = "2.0"
 }
 
 # (Optional but recommended) auto-deploy a default stage so CORS changes go live immediately

@@ -6,6 +6,7 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export default function TranscribeForm() {
   const { voices } = useVoices();
+  console.log(voices)
   const API_BASE = import.meta.env.VITE_API_BASE_URL as string;
   const [voiceType, setVoiceType] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);

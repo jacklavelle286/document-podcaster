@@ -3,13 +3,7 @@ import boto3
 
 def lambda_handler(event, context):
     voices = getVoices()
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": json.dumps({ "voices": voices })
-    }
+    return voices
 
 def getVoices():
     polly = boto3.client("polly")

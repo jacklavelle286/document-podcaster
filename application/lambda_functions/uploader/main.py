@@ -1,17 +1,21 @@
 import json
 import logging
 import boto3
+import os
 from botocore.exceptions import ClientError
 
 def lambda_handler(event, context):
+    '''
+    1. Generate Presigned URL and return to client.
+    2. Use Presigned URL to upload file to s3.
+    '''
     body = json.loads(event["body"])
-    voice_type = body.get("voiceType")
     file_name = body.get("fileName")
+    logging.BASIC_FORMAT(f"File name: {file_name}")
 
-    print(f"Voice type: {voice_type}")
-    print(f"file Name: {file_name}")
-
-    url = createPresignedUrl(bucket="document-podcastor-poc-eu-west-2-upload", object_name=file_name, expiration=3600)
+    bucketName = os.environ("UPLOAD_BUCKET")
+    logging.BASIC_FORMAT(f"BucketName: {bucketName}")
+    url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
 
     return {

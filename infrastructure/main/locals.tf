@@ -19,7 +19,7 @@ locals {
     get_job_repo_name = "${local.resource_name_prefix}-get-job"
     transcriber_repo_name = "${local.resource_name_prefix}-transcriber"
     uploader_repo_name = "${local.resource_name_prefix}-uploader"
-
+    get_voices_repo_name = "${local.resource_name_prefix}-get-voices"
 }
 
 

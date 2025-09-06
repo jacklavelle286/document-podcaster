@@ -69,3 +69,27 @@ module "uploader_function" {
     }
   ]
 }
+
+
+module "get_voices_function" {
+  source           = "../modules/lambda_container"
+  image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.get_voices_repo_name}:latest"
+  function_name    = "${local.resource_name_prefix}-get-voices"
+  lambda_role_name = "${local.resource_name_prefix}-get-voices-role"
+  log_retention_in_days = 3
+
+  policy_statements = [
+    {
+      sid       = "Logs"
+      effect    = "Allow"
+      actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+      resources = ["arn:aws:logs:*:*:*"]
+    },
+    {
+      sid       = "test"
+      effect    = "Allow"
+      actions   = ["*"]
+      resources = ["*"]
+    }
+  ]
+}

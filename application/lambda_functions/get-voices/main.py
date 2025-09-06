@@ -6,9 +6,9 @@ from botocore.exceptions import ClientError
 
 
 def lambda_handler(event, context):
-    print(event)
+    voices = ["Normal", "Interesting", "Funky"]
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': json.dumps(voices)
     }
 

@@ -14,3 +14,11 @@ variable "allowed_methods" {
   type    = list(string)
 
 }
+
+variable "enable_bucket_notification" {
+    default = false
+}
+
+variable "bucket_lambda_function_arn" {
+  default = null
+}

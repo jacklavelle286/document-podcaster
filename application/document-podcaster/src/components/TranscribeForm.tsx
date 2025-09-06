@@ -62,60 +62,68 @@ export default function TranscribeForm() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-3">
-        <label htmlFor="voice-type" className="form-label">
-          Voice Type
-        </label>
-        <select
-          className="form-select"
-          id="voice-type"
-          value={voiceType}
-          onChange={(e) => setVoiceType(e.target.value)}
-          required
-          aria-label="Default select example"
-        >
-          <option value="" selected>
-            Choose a Voice
-          </option>
-          {voices.map((voice, idx) => (
-            <option key={idx} value={voice}>
-              {voice}
-            </option>
-          ))}
-        </select>
-        <div id="emailHelp" className="form-text">
-          Select which voice you'd like your transcription to be read in.
-        </div>
+      <label htmlFor="voice-type" className="form-label">
+        Voice Type
+      </label>
+      <select
+        className="form-select"
+        id="voice-type"
+        value={voiceType}
+        onChange={(e) => setVoiceType(e.target.value)}
+        required
+        aria-label="Default select example"
+      >
+        <option value="" selected>
+        Choose a Voice
+        </option>
+        {voices.map((voice, idx) => (
+        <option key={idx} value={voice}>
+          {voice}
+        </option>
+        ))}
+      </select>
+      <div id="emailHelp" className="form-text">
+        Select which voice you'd like your transcription to be read in.
+      </div>
       </div>
       <div className="mb-3">
-        <label htmlFor="formFile" className="form-label">
-          Default file input example
-        </label>
-        <input
-          className="form-control"
-          type="file"
-          id="formFile"
-          onChange={(e) => {
-            const target = e.target as HTMLInputElement;
-            setFile(target.files && target.files[0] ? target.files[0] : null);
-          }}
-        />
+      <label htmlFor="formFile" className="form-label">
+        Default file input example
+      </label>
+      <input
+        className="form-control"
+        type="file"
+        id="formFile"
+        onChange={(e) => {
+        const target = e.target as HTMLInputElement;
+        setFile(target.files && target.files[0] ? target.files[0] : null);
+        }}
+      />
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <Button
-          buttonType="submit"
-          buttonColour="primary"
-          buttonText="Transcribe"
-        ></Button>
+      <div className="d-flex justify-content-center">
+      <Button
+        buttonType="submit"
+        buttonColour="primary"
+        buttonText="Transcribe"
+      ></Button>
       </div>
       {status === "loading" && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
+      <div className="d-flex justify-content-center">
+        <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
         </div>
+      </div>
       )}
-      {status === "success" && result && <p>Uploaded {file?.name}</p>}
-      {status === "error" && <p className="mt-3 text-danger">Error: {error}</p>}
+      {status === "success" && result && (
+      <div className="d-flex justify-content-center">
+        <p>Uploaded {file?.name}</p>
+      </div>
+      )}
+      {status === "error" && (
+      <div className="d-flex justify-content-center">
+        <p className="mt-3 text-danger">Error: {error}</p>
+      </div>
+      )}
     </form>
   );
 }

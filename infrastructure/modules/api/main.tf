@@ -61,7 +61,7 @@ resource "aws_apigatewayv2_integration" "get_voices_integrations" {
   api_id = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
   integration_uri = var.get_voices_function_arn
-  integration_method = "POST"
+  integration_method = "GET"
   payload_format_version = "2.0"
 }
 

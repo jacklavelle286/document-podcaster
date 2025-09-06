@@ -30,14 +30,14 @@ resource "aws_apigatewayv2_route" "post_uploads" {
 resource "aws_apigatewayv2_route" "get_jobs" {
   api_id    = aws_apigatewayv2_api.http_api.id
   route_key = "GET /jobs/{jobId}"
-  target    = "integrations/${aws_apigatewayv2_integration.get_voices_integrations.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.jobs_integration.id}"
 }
 
 
 resource "aws_apigatewayv2_route" "get_voices" {
   api_id = aws_apigatewayv2_api.http_api.id
-  route_key = "GET /get-voices"
-  target    = "integrations/${aws_apigatewayv2_integration.jobs_integration.id}"
+  route_key = "GET /getvoices"
+  target    = "integrations/${aws_apigatewayv2_integration.get_voices_integrations.id}"
 }
 
 resource "aws_apigatewayv2_integration" "uploads_integration" {
@@ -61,7 +61,7 @@ resource "aws_apigatewayv2_integration" "get_voices_integrations" {
   api_id = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
   integration_uri = var.get_voices_function_arn
-  integration_method = "GET"
+  integration_method = "POST"
   payload_format_version = "2.0"
 }
 

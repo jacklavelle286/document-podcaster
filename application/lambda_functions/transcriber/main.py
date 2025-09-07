@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         first_line = f.readline()
     logger.info(f"First line is: {first_line}")
     logger.info(f"Downloaded file to: {local_file_path}")
-    output_bucket_name = os.environ["DESTINATION_BUCKET"]
+    output_bucket_name = os.environ("DESTINATION_BUCKET")
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
         engine="standard",

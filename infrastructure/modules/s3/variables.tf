@@ -28,10 +28,6 @@ variable "bucket_lambda_function_name" {
   default = null
 }
 
-variable "enable_bucket_notification" {
-  default = false
-}
-
 variable "enable_bucket_policy" {
   default = false
 }

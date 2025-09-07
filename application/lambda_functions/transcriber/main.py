@@ -23,6 +23,7 @@ def lambda_handler(event, context):
         output_prefix="mp3",
         voiceId="Emma"
     )
+    logger.info(f"Response: {response}")
     return {
         'statusCode': 200,
         'body': response

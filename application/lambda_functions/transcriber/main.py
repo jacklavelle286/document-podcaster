@@ -13,6 +13,14 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+
+    download_s3_file = docx_to_text("variables.tf")
+
+    local_file_path = f"/tmp/{os.path.basename('variables.tf')}"
+    with open(local_file_path, "wb") as f:
+        first_line = f.inline.readline()
+    logger.info(f"First line is: {first_line}")
+    logger.info(f"Downloaded file to: {local_file_path}")
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
@@ -28,6 +36,14 @@ def lambda_handler(event, context):
         'body': json.dumps(response, default=str)
     }
 
+def docx_to_text(key):
+    s3 = boto3.client("s3")
+    get_object_response = s3.get_object(
+        Bucket = os.environ("UPLOAD_BUCKET")
+        Key = key
+    )
+
+    
 
 
 def transcriber(engine, language, output_format, s3_bucket, voiceId):

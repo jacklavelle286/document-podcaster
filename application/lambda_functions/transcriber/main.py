@@ -18,8 +18,6 @@ def lambda_handler(event, context):
     file_name = event['Records'][0]['s3']['object']['key']
     logger.info(f"file name: {file_name}")
     document_text = docx_to_text(file_name)
-
-
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
@@ -39,12 +37,15 @@ def lambda_handler(event, context):
 def docx_to_text(key: str) -> str:
     s3 = boto3.client("s3")
     bucket = os.environ["UPLOAD_BUCKET"]
-    obj = s3.get_object(Bucket=bucket, Key=key)
-    doc = docx.Document(key)
-    fullText = []
-    for para in doc.paragraphs:
-        fullText.append(para.text)
-    return '\n'.join(fullText)
+    body = s3.get_object(Bucket=bucket, Key=key)["Body"].read()
+    local_path = os.path.join("/tmp", os.path.basename(key))
+    with open(local_path, "wb") as f:
+        f.write(body)
+    doc = docx.Document(local_path)
+    full_text = [p.text for p in doc.paragraphs]
+    text = "\n".join(full_text)
+    return text
+
 
     
 

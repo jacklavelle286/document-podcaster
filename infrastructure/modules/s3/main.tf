@@ -36,12 +36,6 @@ resource "aws_lambda_permission" "allow_s3_invoke_from_upload_bucket" {
 resource "aws_s3_bucket_policy" "this" {
   count = var.enable_bucket_policy ? 1 : 0
   bucket = aws_s3_bucket.this.bucket
-  policy = data.aws_s3_bucket_policy.this.id
-}
-
-resource "aws_s3_bucket_policy" "this" {
-  count = var.enable_bucket_policy ? 1 : 0
-  bucket = aws_s3_bucket.this.bucket
   policy = data.aws_iam_policy_document.this.json
 }
 

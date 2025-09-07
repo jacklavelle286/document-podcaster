@@ -2,6 +2,7 @@ import json
 import logging
 import boto3
 import os
+import docx
 from botocore.exceptions import ClientError
 
 
@@ -27,6 +28,11 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps(response, default=str)
     }
+
+
+def extractDocText():
+    s3 = boto3.client("s3")
+    
 
 
 

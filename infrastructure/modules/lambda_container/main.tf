@@ -4,6 +4,9 @@ resource "aws_lambda_function" "this" {
   image_uri                      = var.image_uri
   package_type                   = var.package_type
   memory_size                    = var.memory_size
+  ephemeral_storage {
+    size = var.storage_size
+  }
   timeout                        = var.timeout
   reserved_concurrent_executions = var.reserved_concurrent_executions
   publish                        = var.is_versioning

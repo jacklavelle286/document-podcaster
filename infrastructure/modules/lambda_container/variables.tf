@@ -17,6 +17,10 @@ variable "memory_size" {
 }
 
 
+variable "storage_size" {
+  default = 512
+}
+
 variable "timeout" {
   description = "Lambdas timeout."
   default = 5

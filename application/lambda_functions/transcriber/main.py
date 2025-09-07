@@ -17,8 +17,8 @@ def lambda_handler(event, context):
     download_s3_file = docx_to_text("variables.tf")
 
     local_file_path = f"/tmp/{os.path.basename('variables.tf')}"
-    with open(local_file_path, "wb") as f:
-        first_line = f.inline.readline()
+    with open(local_file_path, "r") as f:
+        first_line = f.readline()
     logger.info(f"First line is: {first_line}")
     logger.info(f"Downloaded file to: {local_file_path}")
     output_bucket_name = os.environ["DESTINATION_BUCKET"]

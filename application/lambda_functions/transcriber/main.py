@@ -14,6 +14,7 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+    logger.info(event)
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
@@ -30,9 +31,13 @@ def lambda_handler(event, context):
     }
 
 
-def extractDocText():
-    s3 = boto3.client("s3")
-    
+# def extractDocText():
+#     s3 = boto3.client("s3")
+#     s3.get_object(
+#         Bucket=os.environ("UPLOAD_BUCKET")
+
+#     )
+
 
 
 

@@ -51,7 +51,7 @@ module "transcriber_function" {
     {
       sid = "s3"
       effect = "Allow"
-      actions = [ "s3:*" ]
+      actions = [ "s3:PutObject" ]
       resources = [ "*"]
     }
   ]

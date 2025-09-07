@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         output_format="mp3",
         s3_bucket=output_bucket_name,
         output_prefix="mp3",
-        voiceId="Emmma"
+        voiceId="Emma"
     )
     return {
         'statusCode': 200,

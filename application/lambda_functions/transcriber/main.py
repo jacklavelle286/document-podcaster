@@ -2,7 +2,6 @@ import json
 import logging
 import boto3
 import os
-import docx
 from botocore.exceptions import ClientError
 
 
@@ -14,7 +13,6 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logger.info(event)
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
@@ -29,15 +27,6 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps(response, default=str)
     }
-
-
-# def extractDocText():
-#     s3 = boto3.client("s3")
-#     s3.get_object(
-#         Bucket=os.environ("UPLOAD_BUCKET")
-
-#     )
-
 
 
 

@@ -41,5 +41,7 @@ def transcriber(engine, language, output_format, s3_bucket, output_prefix, voice
             VoiceId=voiceId,
             Text="string"
     )
+
+    return response
     
     

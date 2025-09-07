@@ -1,7 +1,10 @@
 import json
 import boto3
+import logging
 
 def lambda_handler(event, context):
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
     language = "en-GB"
     engine = "standard"
     qs = event.get("queryStringParameters") or {}
@@ -11,6 +14,7 @@ def lambda_handler(event, context):
         engine = qs["engine"]
 
     voices = getVoices(language, engine)
+    logger.info(f"Voices: {voices}")
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},

@@ -25,7 +25,7 @@ def lambda_handler(event, context):
         language="en-GB",
         output_format="mp3",
         s3_bucket=output_bucket_name,
-        voiceId="Emma",
+        voiceId="Brian",
         input_text=document_text
     )
     logger.info(f"Response: {response}")

@@ -26,6 +26,7 @@ module "transcriber_function" {
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.transcriber_repo_name}:latest"
   function_name    = "${local.resource_name_prefix}-transcriber"
   lambda_role_name = "${local.resource_name_prefix}-transcriber-role"
+  timeout = 30
   environment_variables = {
     DESTINATION_BUCKET = module.outputs_bucket.bucket_name
   }

@@ -14,14 +14,13 @@ def lambda_handler(event, context):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    download_s3_file = docx_to_text("variables.tf")
-
-    local_file_path = f"/tmp/{os.path.basename('variables.tf')}"
+    local_file_path = docx_to_text("variables.tf")
     with open(local_file_path, "r") as f:
         first_line = f.readline()
+
     logger.info(f"First line is: {first_line}")
     logger.info(f"Downloaded file to: {local_file_path}")
-    output_bucket_name = os.environ("DESTINATION_BUCKET")
+    output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(
         engine="standard",
@@ -36,14 +35,15 @@ def lambda_handler(event, context):
         'body': json.dumps(response, default=str)
     }
 
-def docx_to_text(key):
+def docx_to_text(key: str) -> str:
     s3 = boto3.client("s3")
-    bucket=os.environ("UPLOAD_BUCKET")
-
-    get_object_response = s3.get_object(
-        Bucket=bucket,
-        Key=key
-    )
+    bucket = os.environ["UPLOAD_BUCKET"]
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    body = obj["Body"].read()         # bytes
+    local_path = f"/tmp/{os.path.basename(key)}"
+    with open(local_path, "wb") as f: # write bytes
+        f.write(body)
+    return local_path
 
     
 

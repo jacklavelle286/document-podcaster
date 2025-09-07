@@ -40,6 +40,6 @@ data "aws_iam_policy_document" "this" {
 
     actions = ["s3:PutObject"]
 
-    resources = ["${aws_s3_bucket.this.arn}/*"]
+    resources = ["${module.outputs_bucket.bucket_arn}/*"]
   }
 }

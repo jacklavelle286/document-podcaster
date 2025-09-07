@@ -13,8 +13,9 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+    logger.info(event)
 
-    local_file_path = docx_to_text("variables.tf")
+    local_file_path = docx_to_text("JL-CV-AWS-Latest.docx")
     with open(local_file_path, "r") as f:
         first_line = f.readline()
 

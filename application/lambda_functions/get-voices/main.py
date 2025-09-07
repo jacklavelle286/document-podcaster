@@ -24,4 +24,4 @@ def getVoices(language, engine):
         LanguageCode=language,
         IncludeAdditionalLanguageCodes=False
     )
-    return [response["Voices"]]
+    return response["Voices"]

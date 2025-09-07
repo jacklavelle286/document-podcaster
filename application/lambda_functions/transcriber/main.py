@@ -13,8 +13,8 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logger.info(event)
     file_name = event['Records'][0]['s3']['object']['key']
+    logger.info(f"file name: {file_name}")
     local_file_path = docx_to_text(file_name)
     with open(local_file_path, "r") as f:
         first_line = f.readline()

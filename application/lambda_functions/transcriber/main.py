@@ -30,7 +30,7 @@ def lambda_handler(event, context):
 
 
 
-def transcriber(engine, language, output_format, s3_bucket, output_prefix, voiceId):
+def transcriber(engine, language, output_format, s3_bucket, output_prefix, voiceId),:
     polly = boto3.client("polly")
     response = polly.synthesize_speech(
             Engine=engine,
@@ -39,6 +39,7 @@ def transcriber(engine, language, output_format, s3_bucket, output_prefix, voice
             OutputS3BucketName=s3_bucket,
             OutputS3KeyPrefix=output_prefix,
             VoiceId=voiceId
+            Text="string"
     )
     
     

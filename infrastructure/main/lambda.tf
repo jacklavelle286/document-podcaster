@@ -55,11 +55,8 @@ module "transcriber_function" {
       effect    = "Allow"
       actions   = ["s3:*"]
       resources = ["*"]
-    },
-    {
-      sid = "textract"
-
     }
+
   ]
 }
 

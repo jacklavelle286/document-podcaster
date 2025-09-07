@@ -18,28 +18,5 @@ module "outputs_bucket" {
   bucket_name = local.s3_outputs_name
   enable_cors = false
   enable_bucket_notification = false
-  # enable_bucket_policy = true
-  # principal_type = "Service"
-  # identifiers = ["polly.amazonaws.com"]
-  # actions = ["s3:PutObject"]
 }
 
-resource "aws_s3_bucket_policy" "this" {
-  bucket = module.outputs_bucket.bucket_name
-  policy = data.aws_iam_policy_document.this.json
-}
-data "aws_iam_policy_document" "this" {
-  statement {
-    sid    = "sid"
-    effect = "Allow"
-
-    principals {
-      type        = "Service"        
-      identifiers = ["polly.amazonaws.com"]  
-    }
-
-    actions = ["s3:PutObject"]
-
-    resources = ["${module.outputs_bucket.bucket_arn}/*"]
-  }
-}

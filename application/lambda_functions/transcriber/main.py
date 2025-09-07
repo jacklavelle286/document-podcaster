@@ -20,7 +20,6 @@ def lambda_handler(event, context):
         language="en-GB",
         output_format="mp3",
         s3_bucket=output_bucket_name,
-        output_prefix="/transcriptions",
         voiceId="Emma"
     )
     logger.info(f"Response: {response}")
@@ -38,7 +37,6 @@ def transcriber(engine, language, output_format, s3_bucket, output_prefix, voice
             LanguageCode=language,
             OutputFormat=output_format, 
             OutputS3BucketName=s3_bucket,
-            OutputS3KeyPrefix=output_prefix,
             VoiceId=voiceId,
             Text="string"
     )

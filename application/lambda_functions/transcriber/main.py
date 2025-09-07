@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     logger.info(f"Response: {response}")
     return {
         'statusCode': 200,
-        'body': response
+        'body': json.dumps(response, default=str)
     }
 
 

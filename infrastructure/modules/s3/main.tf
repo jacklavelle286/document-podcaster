@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "this" {
   count = var.enable_bucket_policy ? 1 : 0
   statement {
     sid = var.bucket_policy_sid
-    effect = var.bucket_policy_sid
+    effect = var.bucket_effect
 
     principals {
       type = var.principal_type

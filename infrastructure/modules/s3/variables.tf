@@ -48,6 +48,11 @@ variable "identifiers" {
 }
 
 
+variable "bucket_effect" {
+  default = "Allow"
+}
+
+
 variable "actions" {
   default = null
 }

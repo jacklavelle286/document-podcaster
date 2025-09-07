@@ -68,17 +68,15 @@ export default function TranscribeForm() {
           value={voiceType}
           onChange={(e) => setVoiceType(e.target.value)}
           required
-          aria-label="Default select example"
+          aria-label="Voice select"
         >
           <option value="">Choose a Voice</option>
-          {Array.isArray(voices) &&
-            voices.map((voice, idx) => (
-              <option key={idx} value={voice}>
-                {voice}
-              </option>
-            ))}
+          {voices.map((v) => (
+            <option key={v.Id} value={v.Name}>
+              {v.Name}
+            </option>
+          ))}
         </select>
-
         <div id="emailHelp" className="form-text">
           Select which voice you'd like your transcription to be read in.
         </div>

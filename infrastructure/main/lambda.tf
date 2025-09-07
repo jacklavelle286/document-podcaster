@@ -40,10 +40,16 @@ module "transcriber_function" {
       resources = ["arn:aws:logs:*:*:*"]
     },
     {
-      sid       = "test"
+      sid       = "polly"
       effect    = "Allow"
-      actions   = ["*"]
+      actions   = ["polly:SynthesizeSpeech"]
       resources = ["*"]
+    },
+    {
+      sid = "s3Put"
+      effect = "Allow"
+      actions = [ "s3:PutObject" ]
+      resources = [ module.outputs_bucket.bucket_arn]
     }
   ]
 }

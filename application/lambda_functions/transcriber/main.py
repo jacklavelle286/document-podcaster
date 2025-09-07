@@ -39,8 +39,8 @@ def lambda_handler(event, context):
 def docx_to_text(key):
     s3 = boto3.client("s3")
     get_object_response = s3.get_object(
-        Bucket = os.environ("UPLOAD_BUCKET")
-        Key = key
+        Bucket=os.environ("UPLOAD_BUCKET"),
+        Key=key
     )
 
     

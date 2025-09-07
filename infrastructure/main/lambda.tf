@@ -42,7 +42,7 @@ module "transcriber_function" {
     {
       sid       = "polly"
       effect    = "Allow"
-      actions   = ["polly:SynthesizeSpeech"]
+      actions   = ["polly:StartSpeechSynthesisTask"]
       resources = ["*"]
     },
     {

@@ -12,3 +12,7 @@ def lambda_handler(event, context):
         'body': json.dumps(event)
     }
 
+
+
+def transcriber():
+    

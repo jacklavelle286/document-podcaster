@@ -88,7 +88,7 @@ module "get_voices_function" {
     {
       sid       = "test"
       effect    = "Allow"
-      actions   = ["*"]
+      actions   = ["polly:DescribeVoices"]
       resources = ["*"]
     }
   ]

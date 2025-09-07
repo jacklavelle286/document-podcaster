@@ -3,6 +3,7 @@ import logging
 import boto3
 import os
 import docx
+from io import BytesIO
 from botocore.exceptions import ClientError
 
 

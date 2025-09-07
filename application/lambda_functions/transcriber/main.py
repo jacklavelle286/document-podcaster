@@ -41,7 +41,7 @@ def docx_to_text(key):
     bucket=os.environ("UPLOAD_BUCKET")
 
     get_object_response = s3.get_object(
-        Bucket=bucket
+        Bucket=bucket,
         Key=key
     )
 

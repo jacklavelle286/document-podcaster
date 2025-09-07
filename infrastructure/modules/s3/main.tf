@@ -31,3 +31,34 @@ resource "aws_lambda_permission" "allow_s3_invoke_from_upload_bucket" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.this.arn
 }
+
+
+resource "aws_s3_bucket_policy" "this" {
+  count = var.enable_bucket_policy ? 1 : 0
+  bucket = aws_s3_bucket.this.bucket
+  policy = data.aws_s3_bucket_policy.this.id
+}
+
+resource "aws_s3_bucket_policy" "this" {
+  count = var.enable_bucket_policy ? 1 : 0
+  bucket = aws_s3_bucket.this.bucket
+  policy = data.aws_iam_policy_document.this.json
+}
+
+data "aws_iam_policy_document" "this" {
+  count = var.enable_bucket_policy ? 1 : 0
+  statement {
+    sid = var.bucket_policy_sid
+    effect = var.bucket_policy_sid
+
+    principals {
+      type = var.principal_type
+      identifiers = var.identifiers
+    }
+
+    actions = var.actions
+
+    resources = "${aws_s3_bucket.this.arn}${var.prefix}"
+  }
+
+}

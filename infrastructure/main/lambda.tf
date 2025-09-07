@@ -46,12 +46,6 @@ module "transcriber_function" {
       effect    = "Allow"
       actions   = ["polly:StartSpeechSynthesisTask"]
       resources = ["*"]
-    },
-    {
-      sid = "s3Put"
-      effect = "Allow"
-      actions = [ "s3:PutObject" ]
-      resources = [ module.outputs_bucket.bucket_arn]
     }
   ]
 }

@@ -15,7 +15,7 @@ export default function useVoices() {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/getvoices?language?="en-GB`, {
+        const res = await fetch(`${API_BASE}/get-voices?language?="en-GB`, {
           method: "GET",
           signal: ctrl.signal,
         });

@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     if "engine" in qs:
         engine = qs["engine"]
 
-    voices = getVoices(language)
+    voices = getVoices(language, engine)
     return {
         "statusCode": 200,
         "headers": {"Content-Type": "application/json"},

@@ -16,7 +16,7 @@ variable "allowed_methods" {
 }
 
 variable "enable_bucket_notification" {
-    default = false
+  default = false
 }
 
 variable "bucket_lambda_function_arn" {
@@ -46,7 +46,6 @@ variable "principal_type" {
 variable "identifiers" {
   default = null
 }
-
 
 variable "bucket_effect" {
   default = "Allow"

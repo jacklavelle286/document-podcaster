@@ -15,7 +15,7 @@ export default function useVoices() {
     (async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/get-voices`, {
+        const res = await fetch(`${API_BASE}/getvoices?language?="en-GB`, {
           method: "GET",
           signal: ctrl.signal,
         });
@@ -23,12 +23,12 @@ export default function useVoices() {
         if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
 
         const data: VoicesResponse = await res.json();
-        console.log("[voices] payload", data); // 👈
+        console.log("[voices] payload", data);
 
         setVoices(data.voices);
       } catch (e: any) {
         if (e?.name !== "AbortError") {
-          console.error("[voices] error", e); // 👈
+          console.error("[voices] error", e); 
 
           setError(e instanceof Error ? e.message : String(e));
         }

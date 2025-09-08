@@ -28,9 +28,9 @@ module "transcriber_function" {
   lambda_role_name = "${local.resource_name_prefix}-transcriber-role"
   timeout          = 300
   memory_size      = 500
-  storage_size = 5000
+  storage_size     = 5000
   environment_variables = {
-    UPLOAD_BUCKET = module.upload_bucket.bucket_name
+    UPLOAD_BUCKET      = module.upload_bucket.bucket_name
     DESTINATION_BUCKET = module.outputs_bucket.bucket_name
   }
 
@@ -57,13 +57,13 @@ module "transcriber_function" {
       resources = ["${module.outputs_bucket.bucket_arn}"]
     },
     {
-      sid = "dynamo"
-      effect = "Allow"
-      actions = ["dynamodb:GetItem", "dynamodb:PutItem"]
-      resources = [ "${module.job_table.table_arn}" ]
+      sid       = "dynamo"
+      effect    = "Allow"
+      actions   = ["dynamodb:GetItem", "dynamodb:PutItem"]
+      resources = ["${module.job_table.table_arn}"]
     }
   ]
-  
+
 }
 
 module "uploader_function" {
@@ -89,6 +89,12 @@ module "uploader_function" {
       effect    = "Allow"
       actions   = ["s3:Put*"]
       resources = ["${module.upload_bucket.bucket_arn}"]
+    },
+    {
+      sid       = "dynamo"
+      effect    = "Allow"
+      actions   = ["dynamodb:PutItem"]
+      resources = ["${module.job_table.table_arn}"]
     }
   ]
 }

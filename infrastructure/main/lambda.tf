@@ -54,7 +54,7 @@ module "transcriber_function" {
       sid       = "s3"
       effect    = "Allow"
       actions   = ["s3:Put*"]
-      resources = ["${module.outputs_bucket.bucket_name}"]
+      resources = ["${module.outputs_bucket.bucket_arn}"]
     },
     {
       sid = "dynamo"

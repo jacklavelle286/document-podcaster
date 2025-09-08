@@ -68,6 +68,7 @@ module "uploader_function" {
   log_retention_in_days = 3
   environment_variables = {
     UPLOAD_BUCKET = module.upload_bucket.bucket_name
+    TABLE_NAME = module.job_table.table_name
   }
 
   policy_statements = [

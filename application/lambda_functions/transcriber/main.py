@@ -47,7 +47,7 @@ def docx_to_text(key: str) -> str:
     return text
 
 
-    
+
 
 
 def transcriber(engine, language, output_format, s3_bucket, voiceId, input_text):
@@ -64,4 +64,3 @@ def transcriber(engine, language, output_format, s3_bucket, voiceId, input_text)
     return response
     
     
-

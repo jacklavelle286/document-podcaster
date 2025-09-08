@@ -7,5 +7,5 @@ resource "aws_dynamodb_table" "this" {
         name = "jobId"
         type = "S"
     }
-
+    
 }

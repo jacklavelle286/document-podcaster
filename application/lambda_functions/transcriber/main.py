@@ -20,6 +20,18 @@ def lambda_handler(event, context):
     file_name = event['Records'][0]['s3']['object']['key']
     logger.info(f"file name: {file_name}")
     document_text = docx_to_text(file_name)
+    
+
+            #     Item={
+            #     "jobId": {"S": jobid},
+            #     "status": {"S": "PENDING"},
+            #     "inputKey": {"S": input_key},
+            #     "voiceId": {"S": voice_id},
+            #     "language": {"S": language},
+            #     "engine": {"S": engine}
+            # }
+
+
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
     response = transcriber(

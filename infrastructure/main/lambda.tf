@@ -53,9 +53,15 @@ module "transcriber_function" {
     {
       sid       = "s3"
       effect    = "Allow"
-      actions   = ["s3:*"]
-      resources = ["*"]
-    }
+      actions   = ["s3:Put*"]
+      resources = ["${module.outputs_bucket}"]
+    },
+    {
+      sid = "dynamo"
+      effect = "Allow"
+      actions = ["dynamodb:GetItem", "dynamodb:PutItem"]
+      resources = [ "${module.job_table.table_arn}" ]
+    }"
 
   ]
 }
@@ -68,7 +74,7 @@ module "uploader_function" {
   log_retention_in_days = 3
   environment_variables = {
     UPLOAD_BUCKET = module.upload_bucket.bucket_name
-    TABLE_NAME = module.job_table.table_name
+    TABLE_NAME    = module.job_table.table_name
   }
 
   policy_statements = [
@@ -81,8 +87,8 @@ module "uploader_function" {
     {
       sid       = "test"
       effect    = "Allow"
-      actions   = ["*"]
-      resources = ["*"]
+      actions   = ["s3:Put*"]
+      resources = ["${module.upload_bucket.bucket_arn}"]
     }
   ]
 }

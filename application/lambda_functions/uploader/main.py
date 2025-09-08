@@ -14,12 +14,21 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+
     body = json.loads(event["body"])
     logger.info(f"Body: {body}")
+
     file_name = body.get("fileName")
+    logger.info(f"file name: {file_name}")
+
     job_id = str(int(datetime.datetime.now(timezone.utc).timestamp()))
     job_id = job_id.replace(" ", "").replace(".", "").replace(":", "").replace("-", "")
+
+    voice_id = body.get("voiceType")
+    logger.info(f"voice id: {voice_id}")
+
     bucketName = os.environ["UPLOAD_BUCKET"]
+    
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
     put = jobToDynamo(jobid=job_id, input_key=file_name, voice_id=voice_id, language="en-US", engine="standard")
     return {

@@ -6,6 +6,7 @@ from botocore.exceptions import ClientError
 import random
 import datetime
 from datetime import timezone
+import json
 
 def lambda_handler(event, context):
     '''
@@ -16,7 +17,6 @@ def lambda_handler(event, context):
     logger.setLevel(logging.INFO)
 
     body = json.loads(event["body"])
-    logger.info(f"Body: {body}")
 
     file_name = body.get("fileName")
     logger.info(f"file name: {file_name}")

@@ -10,11 +10,13 @@ from botocore.exceptions import ClientError
 def lambda_handler(event, context):
     '''
     1. Get event from s3 upload
-    2. Trigger transcription job
-    3. Send output to an output s3 bucket
+    2. Get line item from dynamo using job id 
+    3. Trigger transcription job using job values
+    4. Send output to the output s3 bucket
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+    logger.info(event)
     file_name = event['Records'][0]['s3']['object']['key']
     logger.info(f"file name: {file_name}")
     document_text = docx_to_text(file_name)

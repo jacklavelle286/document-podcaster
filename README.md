@@ -5,16 +5,15 @@ This app turns documents into downloadable mp3 files.
 
     # to do:
 
-
-1. ensure this works with docx and pdfs
-2. plug in name from frontend
-3. create polling lambda
-4. edit uploader lambda to initialise records in dynamo
-5. edit transcriber to read dynamo with jobId
-6. Fix react to either download mp3 / throw error on page.
-7. Robust error handling in functions 
-8. Dark mode 
-9. PDF support
+    - Ensure this works with DOCX and PDFs
+    - Plug in name from frontend
+    - Create polling Lambda
+    - Edit uploader Lambda to initialise records in DynamoDB
+    - Edit transcriber to read DynamoDB with jobId
+    - Fix React to either download MP3 or throw error on page
+    - Robust error handling in functions
+    - Dark mode
+    - Refresh voices button
 
 
 # orchestrate:

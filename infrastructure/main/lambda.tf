@@ -79,23 +79,30 @@ module "uploader_function" {
 
   policy_statements = [
     {
-      sid       = "Logs"
-      effect    = "Allow"
-      actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-      resources = ["arn:aws:logs:*:*:*"]
+      sid    = "s3Objects"
+      effect = "Allow"
+      actions = [
+        "s3:PutObject",
+        "s3:PutObjectTagging",
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:GetObjectTagging"
+      ]
+      resources = [
+        "${module.upload_bucket.bucket_arn}/*" # ← objects
+      ]
     },
     {
-      sid       = "test"
-      effect    = "Allow"
-      actions   = ["s3:Put*", "s3:GetObject", "s3:GetObjectVersion", "s3:GetObjectTagging"]
-      resources = ["${module.upload_bucket.bucket_arn}"]
-    },
-    {
-      sid       = "dynamo"
-      effect    = "Allow"
-      actions   = ["dynamodb:PutItem"]
-      resources = ["${module.job_table.table_arn}"]
+      sid    = "s3Bucket"
+      effect = "Allow"
+      actions = [
+        "s3:ListBucket" # if you ever list/check keys
+      ]
+      resources = [
+        "${module.upload_bucket.bucket_arn}" # ← bucket itself
+      ]
     }
+
   ]
 }
 

@@ -3,7 +3,9 @@ import logging
 import boto3
 import os
 from botocore.exceptions import ClientError
-from datetime import datetime, timezone
+import random
+import datetime
+from datetime import timezone
 
 def lambda_handler(event, context):
     '''
@@ -15,16 +17,11 @@ def lambda_handler(event, context):
     body = json.loads(event["body"])
     logger.info(f"Body: {body}")
     file_name = body.get("fileName")
-    voice_id = body.get("voiceType")
-
-    # genrate job id
+    job_id = str(int(datetime.datetime.now(timezone.utc).timestamp()))
+    job_id = job_id.replace(" ", "").replace(".", "").replace(":", "").replace("-", "")
     bucketName = os.environ["UPLOAD_BUCKET"]
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
-
-    jobid = str(int(datetime.datetime.now(timezone.utc).timestamp()))
-    jobid = str(int(datetime.now(timezone.utc).timestamp()))
-    # Store job in DynamoDB
-    put = jobToDynamo(jobid=jobid, input_key=file_name, voice_id=voice_id, language="en-US", engine="standard")
+    put = jobToDynamo(jobid=job_id, input_key=file_name, voice_id=voice_id, language="en-US", engine="standard")
     return {
         "statusCode": 200,
         "headers": {
@@ -64,10 +61,8 @@ def jobToDynamo(jobid, input_key, voice_id, language, engine):
             "inputKey": {"S": input_key},
             "voiceId": {"S": voice_id},
             "language": {"S": language},
-            "engine": {"S": engine},
-            "createdAt": {"N": str(int(datetime.now(timezone.utc).timestamp()))},
+            "engine": {"S": engine}
         }
     )
     return resp
-
 

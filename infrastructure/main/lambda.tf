@@ -87,7 +87,7 @@ module "uploader_function" {
     {
       sid       = "test"
       effect    = "Allow"
-      actions   = ["s3:Put*"]
+      actions   = ["s3:Put*", "s3:GetObject", "s3:GetObjectVersion", "s3:GetObjectTagging"]
       resources = ["${module.upload_bucket.bucket_arn}"]
     },
     {

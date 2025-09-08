@@ -14,6 +14,7 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
 
     body = json.loads(event["body"])
     logger.info(f"Body: {body}")
@@ -28,16 +29,20 @@ def lambda_handler(event, context):
     logger.info(f"voice id: {voice_id}")
 
     bucketName = os.environ["UPLOAD_BUCKET"]
-    
+
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
+    logger.info(f"url response: {url}")
+    
     put = jobToDynamo(jobid=job_id, input_key=file_name, voice_id=voice_id, language="en-US", engine="standard")
+
     return {
         "statusCode": 200,
         "headers": {
             "Content-Type": "application/json"
         },
         "body": json.dumps({
-            "url": url
+            "url": url,
+            "put_response": put
         })
     }
 
@@ -52,26 +57,29 @@ def createPresignedUrl(bucket, object_name, expiration):
             Params={'Bucket': bucket, 'Key': object_name},
             ExpiresIn=expiration,
         )
+        return response 
     except ClientError as e:
-        logging.error(e)
-        return None
-    return response
-
+        logging.error(f"Error creating presigned url: {e}")
+        return None  
 
 
 def jobToDynamo(jobid, input_key, voice_id, language, engine):
     dynamodb = boto3.client("dynamodb")
     table_name = os.environ["TABLE_NAME"]
-    resp = dynamodb.put_item(
-        TableName=table_name,
-        Item={
-            "jobId": {"S": jobid},
-            "status": {"S": "PENDING"},
-            "inputKey": {"S": input_key},
-            "voiceId": {"S": voice_id},
-            "language": {"S": language},
-            "engine": {"S": engine}
-        }
-    )
-    return resp
+    try:
+        resp = dynamodb.put_item(
+            TableName=table_name,
+            Item={
+                "jobId": {"S": jobid},
+                "status": {"S": "PENDING"},
+                "inputKey": {"S": input_key},
+                "voiceId": {"S": voice_id},
+                "language": {"S": language},
+                "engine": {"S": engine}
+            }
+        )
+        return resp  # Returns the response dict if successful
+    except Exception as e:
+        logging.error(f"Error writing to DynamoDB: {e}")
+        return None  # Returns None if there is an error
 

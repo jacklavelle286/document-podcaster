@@ -14,7 +14,6 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logger.setLevel(logging.ERROR)
 
     body = json.loads(event["body"])
     logger.info(f"Body: {body}")

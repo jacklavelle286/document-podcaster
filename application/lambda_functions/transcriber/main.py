@@ -64,3 +64,29 @@ def transcriber(engine, language, output_format, s3_bucket, voiceId, input_text)
     return response
     
     
+
+
+    # to do:
+
+# 1. allow files with spaces to work
+# 2. ensure this works with docx and pdfs
+# 3. plug in name from frontend
+# 3. create polling lambda
+# 4. edit uploader lambda to initialise records in dynamo
+# 5. edit transcriber to read dynamo with jobId
+# 6. Fix react to either download mp3 / throw error on page.
+# 7. Robust error handling in functions
+
+
+# orchestrate:
+
+# React (POST /uploads with options)
+#     └── API creates jobId + DynamoDB item (stores voice/language/engine)
+#           └── API returns { jobId, uploadUrl, objectKey }
+# React PUT file to S3 at objectKey
+# S3 event fires transcriber function
+#     └── Parse jobId from key -> read DynamoDB -> get options
+#     └── Extract text -> Polly (options) -> write outputs/{jobId}.mp3
+#     └── Update DynamoDB: { status: SUCCEEDED, outputKey }
+# React polls GET /jobs/{jobId}
+#     └── If SUCCEEDED -> API generates presigned GET for outputKey -> returns URL

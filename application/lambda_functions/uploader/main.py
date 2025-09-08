@@ -35,6 +35,9 @@ def lambda_handler(event, context):
 
 def createPresignedUrl(bucket, object_name, expiration):
     s3_client = boto3.client('s3')
+    # remove spaces 
+    object_name = object_name.replace(" ", "")
+    logging.info(f"spaces removed: {object_name}")
     try:
         response = s3_client.generate_presigned_url(
             'put_object',

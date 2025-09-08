@@ -19,7 +19,6 @@ def lambda_handler(event, context):
     voice_id = body.get("voiceType")
 
     # genrate job id
-    put = jobToDynamo(jobid=1234, input_key=file_name, voice_id=voice_id)
     bucketName = os.environ["UPLOAD_BUCKET"]
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 

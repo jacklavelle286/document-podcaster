@@ -3,8 +3,7 @@ import logging
 import boto3
 import os
 from botocore.exceptions import ClientError
-import datetime
-from datetime import timezone
+from datetime import datetime, timezone
 
 def lambda_handler(event, context):
     '''
@@ -23,7 +22,7 @@ def lambda_handler(event, context):
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
     jobid = str(int(datetime.datetime.now(timezone.utc).timestamp()))
-
+    jobid = str(int(datetime.now(timezone.utc).timestamp()))
     # Store job in DynamoDB
     put = jobToDynamo(jobid=jobid, input_key=file_name, voice_id=voice_id, language="en-US", engine="standard")
     return {

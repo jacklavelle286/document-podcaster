@@ -11,10 +11,9 @@ def lambda_handler(event, context):
     '''
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-
     body = json.loads(event["body"])
+    logger.info(f"Body: {body}")
     file_name = body.get("fileName")
-    logger.info(event)
     bucketName = os.environ["UPLOAD_BUCKET"]
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
@@ -32,7 +31,6 @@ def lambda_handler(event, context):
 
 def createPresignedUrl(bucket, object_name, expiration):
     s3_client = boto3.client('s3')
-    # remove spaces 
     object_name = object_name.replace(" ", "")
     logging.info(f"spaces removed: {object_name}")
     try:

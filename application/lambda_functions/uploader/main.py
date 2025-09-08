@@ -14,11 +14,8 @@ def lambda_handler(event, context):
 
     body = json.loads(event["body"])
     file_name = body.get("fileName")
-
-    logger.info(f"File name: {file_name}")
-
+    logger.info(event)
     bucketName = os.environ["UPLOAD_BUCKET"]
-    logger.info(f"BucketName: {bucketName}")
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
 

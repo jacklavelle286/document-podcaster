@@ -23,7 +23,6 @@ def lambda_handler(event, context):
     bucketName = os.environ["UPLOAD_BUCKET"]
     url = createPresignedUrl(bucket=bucketName, object_name=file_name, expiration=3600)
 
-    # Generate a unique job id, e.g., using timestamp
     jobid = str(int(datetime.datetime.now(timezone.utc).timestamp()))
 
     # Store job in DynamoDB

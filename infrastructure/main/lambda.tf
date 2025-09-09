@@ -57,7 +57,7 @@ module "transcriber_function" {
       sid       = "s3grab"
       effect    = "Allow"
       actions   = ["s3:Get*"]
-      resources = ["${module.upload_bucket.bucket_arn}"]
+      resources = ["${module.upload_bucket.bucket_arn}", "${module.upload_bucket.bucket_arn}/*"]
     },
     {
       sid       = "dynamo"

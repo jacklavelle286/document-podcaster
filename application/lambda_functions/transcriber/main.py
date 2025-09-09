@@ -22,6 +22,7 @@ def lambda_handler(event, context):
     document_text = docx_to_text(file_name)
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     logger.info(f"Got s3 bucket name: {output_bucket_name}")
+    job_id =
     response = transcriber(
         engine="standard",
         language="en-GB",
@@ -31,7 +32,8 @@ def lambda_handler(event, context):
         input_text=document_text
     )
     if response:
-        # dynamodb put completed to row with job id
+
+        print("dynamo call to update")
 
     logger.info(f"Response: {response}")
     return {

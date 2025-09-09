@@ -53,7 +53,7 @@ module "transcriber_function" {
     {
       sid       = "s3"
       effect    = "Allow"
-      actions   = ["s3:Put*"]
+      actions   = ["s3:Put*", "s3:Get*"]
       resources = ["${module.outputs_bucket.bucket_arn}"]
     },
     {

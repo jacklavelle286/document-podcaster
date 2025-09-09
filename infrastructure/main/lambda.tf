@@ -47,12 +47,17 @@ module "transcriber_function" {
       actions   = ["polly:StartSpeechSynthesisTask"]
       resources = ["*"]
     },
-
     {
-      sid       = "s3"
+      sid       = "s3-output"
       effect    = "Allow"
-      actions   = ["s3:*"]
-      resources = ["${module.outputs_bucket.bucket_arn}", "${module.outputs_bucket.bucket_arn}/*"]
+      actions   = ["s3:Put*"]
+      resources = ["${module.outputs_bucket.bucket_arn}"]
+    },
+    {
+      sid       = "s3-grab"
+      effect    = "Allow"
+      actions   = ["s3:Get*"]
+      resources = ["${module.upload_bucket.bucket_name}"]
     },
     {
       sid       = "dynamo"

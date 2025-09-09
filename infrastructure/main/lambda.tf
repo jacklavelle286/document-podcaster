@@ -92,18 +92,25 @@ module "uploader_function" {
         "s3:GetObjectTagging"
       ]
       resources = [
-        "${module.upload_bucket.bucket_arn}/*" # ← objects
+        "${module.upload_bucket.bucket_arn}/*"
       ]
     },
     {
       sid    = "s3Bucket"
       effect = "Allow"
       actions = [
-        "s3:ListBucket" # if you ever list/check keys
+        "s3:ListBucket" 
       ]
       resources = [
-        "${module.upload_bucket.bucket_arn}" # ← bucket itself
+        "${module.upload_bucket.bucket_arn}"
       ]
+    },
+    {
+      sid = "dynamo"
+      effect = "Allow"
+      actions = [ "dynamodb:PutItem" ]
+      resources = [ "${module.job_table.table_name}" ]
+    
     }
 
   ]

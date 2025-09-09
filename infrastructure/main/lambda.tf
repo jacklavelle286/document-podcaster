@@ -109,7 +109,7 @@ module "uploader_function" {
       sid = "dynamo"
       effect = "Allow"
       actions = [ "dynamodb:PutItem" ]
-      resources = [ "${module.job_table.table_name}" ]
+      resources = [ "${module.job_table.table_arn}" ]
     
     }
 

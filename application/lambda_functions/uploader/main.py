@@ -77,8 +77,8 @@ def jobToDynamo(jobid, input_key, voice_id, language, engine):
                 "engine": {"S": engine}
             }
         )
-        return resp  # Returns the response dict if successful
+        return resp  
     except Exception as e:
         logging.error(f"Error writing to DynamoDB: {e}")
-        return None  # Returns None if there is an error
+        return None 
 

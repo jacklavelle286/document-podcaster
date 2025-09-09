@@ -34,8 +34,6 @@ module "transcriber_function" {
     DESTINATION_BUCKET = module.outputs_bucket.bucket_name
   }
 
-
-
   policy_statements = [
     {
       sid       = "Logs"
@@ -53,7 +51,7 @@ module "transcriber_function" {
     {
       sid       = "s3"
       effect    = "Allow"
-      actions   = ["s3:Put*", "s3:Get*"]
+      actions   = ["s3:*"]
       resources = ["${module.outputs_bucket.bucket_arn}", "${module.outputs_bucket.bucket_arn}/*"]
     },
     {

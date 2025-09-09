@@ -48,13 +48,13 @@ module "transcriber_function" {
       resources = ["*"]
     },
     {
-      sid       = "s3-output"
+      sid       = "s3output"
       effect    = "Allow"
       actions   = ["s3:Put*"]
       resources = ["${module.outputs_bucket.bucket_arn}"]
     },
     {
-      sid       = "s3-grab"
+      sid       = "s3grab"
       effect    = "Allow"
       actions   = ["s3:Get*"]
       resources = ["${module.upload_bucket.bucket_arn}"]

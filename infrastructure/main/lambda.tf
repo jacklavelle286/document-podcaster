@@ -62,7 +62,7 @@ module "transcriber_function" {
     {
       sid       = "dynamo"
       effect    = "Allow"
-      actions   = ["dynamodb:GetItem", "dynamodb:PutItem"]
+      actions   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:UpdateItem"]
       resources = ["${module.job_table.table_arn}"]
     }
   ]

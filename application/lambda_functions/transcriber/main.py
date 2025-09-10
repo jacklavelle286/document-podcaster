@@ -18,12 +18,15 @@ def lambda_handler(event, context):
     logger.setLevel(logging.INFO)
     logger.info(event)
     file_name = event['Records'][0]['s3']['object']['key']
+
     logger.info(f"file name: {file_name}")
     document_text = docx_to_text(file_name)
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     file_name_list = file_name.split("/")
     jobId = file_name_list[1]
     logger.info(f"JobId: {jobId}")
+    item_attributes = get_item_attributes(jobId=jobId)
+    logger.info(f"Item: {item_attributes}")
     response = transcriber(
         engine="standard",
         language="en-GB",
@@ -33,8 +36,9 @@ def lambda_handler(event, context):
         input_text=document_text
     )
     if response:
-        # dynamodb put completed to row with job id
-        print("dynamo call to table with job id")
+        put = jobToDynamo(jobId=jobId, status="SUCCESS")
+
+        
 
     logger.info(f"Response: {response}")
     return {
@@ -56,8 +60,6 @@ def docx_to_text(key: str) -> str:
 
 
 
-
-
 def transcriber(engine, language, output_format, s3_bucket, voiceId, input_text):
     polly = boto3.client("polly")
     response = polly.start_speech_synthesis_task(
@@ -72,3 +74,37 @@ def transcriber(engine, language, output_format, s3_bucket, voiceId, input_text)
     return response
     
     
+
+def jobToDynamo(jobId, status):
+    dynamodb = boto3.client("dynamodb")
+    table_name = os.environ["TABLE_NAME"]
+    try:
+        resp = dynamodb.update_item(
+            TableName=table_name,
+            Key={"jobId": {"S": jobId}},
+            UpdateExpression="SET #s = :s, outputKey = :o",
+            ExpressionAttributeNames={"#s": "status"},
+            ExpressionAttributeValues={
+                ":s": {"S": status},
+            }
+        )
+        return resp
+    except Exception as e:
+        logging.error(f"Error updating DynamoDB: {e}")
+        return None 
+
+
+def get_item_attributes(jobId):
+    dynamodb = boto3.client("dynamodb")
+    table_name = os.environ["TABLE_NAME"]
+    try:
+        resp = dynamodb.get_item(
+            TableName = table_name,
+            Key={
+                "jobId": {"S": jobId}
+            }
+        )
+        return resp
+    except Exception as e:
+        logging.error(f"Error reading from DynamoDB: {e}")
+        return None 

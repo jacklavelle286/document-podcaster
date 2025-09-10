@@ -32,6 +32,7 @@ module "transcriber_function" {
   environment_variables = {
     UPLOAD_BUCKET      = module.upload_bucket.bucket_name
     DESTINATION_BUCKET = module.outputs_bucket.bucket_name
+    TABLE_NAME         = module.job_table.table_name
   }
 
   policy_statements = [

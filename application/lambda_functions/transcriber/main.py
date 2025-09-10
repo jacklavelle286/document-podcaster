@@ -21,8 +21,9 @@ def lambda_handler(event, context):
     logger.info(f"file name: {file_name}")
     document_text = docx_to_text(file_name)
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
-    logger.info(f"Got s3 bucket name: {output_bucket_name}")
-    job_id = 
+    file_name_list = file_name.split("/")
+    jobId = file_name_list[1]
+    logger.info(f"JobId: {jobId}")
     response = transcriber(
         engine="standard",
         language="en-GB",

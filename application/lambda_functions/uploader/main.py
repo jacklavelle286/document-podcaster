@@ -45,6 +45,7 @@ def lambda_handler(event, context):
 def createPresignedUrl(bucket, object_name, jobId, expiration):
     s3_client = boto3.client('s3')
     safe_name = object_name.replace(" ", "")
+    safe_name = safe_name.replace("-", "")
     object_key = f"uploads/{jobId}/{safe_name}"
     try:
         url = s3_client.generate_presigned_url(

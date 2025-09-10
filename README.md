@@ -7,8 +7,7 @@ This app turns documents into downloadable mp3 files.
 
     - Ensure this works with DOCX and PDFs
     - Plug in name from frontend
-    - Create polling Lambda
-    - Edit uploader Lambda to initialise records in DynamoDB
+    - Create polling Lambda and front end
     - Edit transcriber to read DynamoDB with jobId
     - Fix React to either download MP3 or throw error on page
     - Robust error handling in functions

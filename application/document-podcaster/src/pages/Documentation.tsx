@@ -5,7 +5,7 @@ export default function Documentation() {
     <>
       <h2 className="text-center p-3 m-5">📄 Documentation </h2>
       <Card backgroundColour="var(--bs-light-50)" hoverEffect={false}>
-        <h1>Intructions</h1>
+        <h1>Instructions</h1>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <ol
             className=""

@@ -82,11 +82,9 @@ def jobToDynamo(jobId, status):
         resp = dynamodb.update_item(
             TableName=table_name,
             Key={"jobId": {"S": jobId}},
-            UpdateExpression="SET #s = :s, outputKey = :o",
+            UpdateExpression="SET #s = :val",
             ExpressionAttributeNames={"#s": "status"},
-            ExpressionAttributeValues={
-                ":s": {"S": status},
-            }
+            ExpressionAttributeValues={":val": {"S": status}}
         )
         return resp
     except Exception as e:

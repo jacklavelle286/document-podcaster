@@ -3,6 +3,9 @@ module "get_job_function" {
   image_uri        = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/${local.get_job_repo_name}:latest"
   function_name    = "${local.resource_name_prefix}-get_job"
   lambda_role_name = "${local.resource_name_prefix}-get-job-role"
+  environment_variables = {
+    TABLE_NAME         = module.job_table.table_name
+  }
   policy_statements = [
     {
       sid       = "Logs"

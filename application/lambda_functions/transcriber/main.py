@@ -20,25 +20,32 @@ def lambda_handler(event, context):
     file_name = event['Records'][0]['s3']['object']['key']
 
     logger.info(f"file name: {file_name}")
+
     document_text = docx_to_text(file_name)
+
     output_bucket_name = os.environ["DESTINATION_BUCKET"]
     file_name_list = file_name.split("/")
     jobId = file_name_list[1]
     logger.info(f"JobId: {jobId}")
     item_attributes = get_item_attributes(jobId=jobId)
     logger.info(f"Item: {item_attributes}")
+    voiceId = item_attributes["Item"]["voiceId"]["S"]
+    logger.info(f"VoiceId: {voiceId}")
+    engine = item_attributes['Item']["engine"]["S"]
+    logger.info(f"Engine: {engine}")
+    language = item_attributes['Item']["language"]["S"]
+    logger.info(f"Language: {language}")
+
+    job = jobToDynamo(status="SUCCESS")
+    
     response = transcriber(
-        engine="standard",
-        language="en-GB",
+        engine=engine,
+        language=language,
         output_format="mp3",
         s3_bucket=output_bucket_name,
-        voiceId="Brian",
+        voiceId=voiceId,
         input_text=document_text
     )
-    if response:
-        put = jobToDynamo(jobId=jobId, status="SUCCESS")
-
-        
 
     logger.info(f"Response: {response}")
     return {
@@ -106,3 +113,5 @@ def get_item_attributes(jobId):
     except Exception as e:
         logging.error(f"Error reading from DynamoDB: {e}")
         return None 
+
+        

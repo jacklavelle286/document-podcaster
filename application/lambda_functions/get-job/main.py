@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     check = checkStatus("968b867b5d2b45a59b7b71543348fad3")
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from get job!')
+        'body': check
     }
 
 

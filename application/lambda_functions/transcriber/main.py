@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     language = item_attributes['Item']["language"]["S"]
     logger.info(f"Language: {language}")
 
-    job = jobToDynamo(status="SUCCESS")
+    job = jobToDynamo(jobId=jobId, status="SUCCESS")
     
     response = transcriber(
         engine=engine,

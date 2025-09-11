@@ -46,6 +46,7 @@ def lambda_handler(event, context):
         voiceId=voiceId,
         input_text=document_text
     )
+    
 
     logger.info(f"Response: {response}")
     return {

@@ -65,6 +65,12 @@ module "transcriber_function" {
       effect    = "Allow"
       actions   = ["dynamodb:GetItem", "dynamodb:PutItem", "dynamodb:UpdateItem"]
       resources = ["${module.job_table.table_arn}"]
+    },
+    {
+      sid       = "s3again"
+      effect    = "Allow"
+      actions   = ["s3:*"]
+      resources = ["${module.outputs_bucket.bucket_arn}/*", "${module.outputs_bucket.bucket_arn}"]
     }
   ]
 
